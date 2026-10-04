@@ -1,0 +1,85 @@
+# Branch owners (GitHub usernames as in the repo branches). A PR needs approval from the owner of the files it touches.
+# Suriya        : authentication and security
+# Sivamuthu     : course management (admin)
+# Amogh         : course viewing, search, filters
+# Meruva Lokesh : customer profile and dashboard
+# Shoryan       : cart
+# Tanvi         : orders and enrollments
+# Sumit         : reviews and AI search
+# NOTE: the handles below are the names from the repo branches; correct them if a GitHub username differs.
+
+# ---- Suriya: authentication and security
+/springapp/src/main/java/com/examly/springapp/config/                          @weirdy1224
+/springapp/src/main/java/com/examly/springapp/controller/AuthController.java   @weirdy1224
+/springapp/src/main/java/com/examly/springapp/**/*User*                        @weirdy1224
+/springapp/src/main/java/com/examly/springapp/**/*RefreshToken*                @weirdy1224
+/springapp/src/main/java/com/examly/springapp/**/*Access*                      @weirdy1224
+/angularapp/src/app/modules/auth/                                              @weirdy1224
+/angularapp/src/app/components/login/                                          @weirdy1224
+/angularapp/src/app/components/registration/                                   @weirdy1224
+/angularapp/src/app/components/authguard/                                      @weirdy1224
+/angularapp/src/app/services/auth*                                             @weirdy1224
+/angularapp/src/app/services/user-store*                                       @weirdy1224
+
+# ---- Sivamuthu: course management (admin)
+/springapp/src/main/java/com/examly/springapp/**/Course.java                   @sivamuthu5726-hue
+/springapp/src/main/java/com/examly/springapp/**/CourseRepo.java              @sivamuthu5726-hue
+/springapp/src/main/java/com/examly/springapp/**/CourseService*.java          @sivamuthu5726-hue
+/springapp/src/main/java/com/examly/springapp/controller/CourseController.java @sivamuthu5726-hue
+/angularapp/src/app/modules/admin/                                             @sivamuthu5726-hue
+/angularapp/src/app/components/add-course/                                     @sivamuthu5726-hue
+/angularapp/src/app/components/edit-course/                                    @sivamuthu5726-hue
+
+# ---- Amogh: course viewing, search, filters, pagination
+/springapp/src/main/java/com/examly/springapp/dto/CourseSearchRequest.java     @shrivastavaamogh
+/springapp/src/main/java/com/examly/springapp/dto/PageResponse.java            @shrivastavaamogh
+/angularapp/src/app/components/customer-view-courses/                          @shrivastavaamogh
+/angularapp/src/app/components/view-courses/                                   @shrivastavaamogh
+/angularapp/src/app/components/course-details/                                 @shrivastavaamogh
+/angularapp/src/app/modules/course-details/                                    @shrivastavaamogh
+/angularapp/src/app/shared/course-card/                                        @shrivastavaamogh
+/angularapp/src/app/services/course*                                           @shrivastavaamogh
+
+# ---- Meruva Lokesh: customer profile and dashboard
+/springapp/src/main/java/com/examly/springapp/**/Customer*                     @meruva-lokesh
+/springapp/src/main/java/com/examly/springapp/**/Dashboard*                    @meruva-lokesh
+/springapp/src/main/java/com/examly/springapp/dto/*Stats*                      @meruva-lokesh
+/angularapp/src/app/components/dashboard/                                      @meruva-lokesh
+/angularapp/src/app/components/customerdashboard/                              @meruva-lokesh
+/angularapp/src/app/components/customer-profile/                               @meruva-lokesh
+/angularapp/src/app/services/customer*                                         @meruva-lokesh
+
+# ---- Shoryan: cart
+/springapp/src/main/java/com/examly/springapp/**/Cart*                         @shoryan30
+/angularapp/src/app/components/my-cart/                                        @shoryan30
+/angularapp/src/app/services/cart*                                             @shoryan30
+
+# ---- Tanvi: orders and enrollments
+/springapp/src/main/java/com/examly/springapp/**/Order*                        @Tanvi3105
+/springapp/src/main/java/com/examly/springapp/**/Orders.java                   @Tanvi3105
+/angularapp/src/app/components/place-order/                                    @Tanvi3105
+/angularapp/src/app/components/my-orders/                                      @Tanvi3105
+/angularapp/src/app/components/order-details/                                  @Tanvi3105
+/angularapp/src/app/components/view-orders/                                    @Tanvi3105
+/angularapp/src/app/services/order*                                            @Tanvi3105
+
+# ---- Sumit: reviews and AI search
+/springapp/src/main/java/com/examly/springapp/**/Review*                       @SumitDeokar-2003
+/springapp/src/main/java/com/examly/springapp/**/*Gemini*                      @SumitDeokar-2003
+/springapp/src/main/java/com/examly/springapp/**/CourseAi*                     @SumitDeokar-2003
+/springapp/src/main/java/com/examly/springapp/config/AiUsageLimiter.java       @SumitDeokar-2003
+/angularapp/src/app/components/add-review/                                     @SumitDeokar-2003
+/angularapp/src/app/components/view-review/                                    @SumitDeokar-2003
+/angularapp/src/app/services/ai*                                               @SumitDeokar-2003
+/angularapp/src/app/shared/star-rating/                                        @SumitDeokar-2003
+
+# ---- Shared files: every change needs the whole team's attention (lead approves)
+/springapp/pom.xml                                   @weirdy1224 @meruva-lokesh
+/springapp/src/main/java/com/examly/springapp/exception/ @weirdy1224 @meruva-lokesh
+/springapp/src/main/java/com/examly/springapp/config/SwaggerConfig.java @meruva-lokesh
+/angularapp/src/app/constant.ts                      @meruva-lokesh
+/angularapp/src/app/app.module.ts                    @meruva-lokesh
+/angularapp/src/app/app-routing.module.ts            @meruva-lokesh
+/angularapp/src/theme.scss                           @meruva-lokesh
+/angularapp/src/styles.css                           @meruva-lokesh
+/angularapp/*.json                                   @meruva-lokesh

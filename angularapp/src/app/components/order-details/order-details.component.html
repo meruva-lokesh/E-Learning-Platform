@@ -1,0 +1,20 @@
+<div class="page narrow">
+  <a routerLink="/my-orders" class="back"><mat-icon>arrow_back</mat-icon>My Enrollments</a>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+  <ng-container *ngIf="order">
+    <div class="page-head"><div><h2>Enrollment #{{ order.orderId }}</h2><p>{{ order.courses?.length }} course{{ order.courses?.length === 1 ? '' : 's' }} in this order.</p></div></div>
+    <div class="table-card">
+      <table class="data">
+        <thead><tr><th>Course</th><th>About</th><th class="num">Price</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let c of order.courses">
+            <td><div class="cell"><img class="thumb" [src]="c.courseImageUrl" [alt]="c.courseType" /><a [routerLink]="['/course-details', c.courseId]">{{ c.courseType }}</a></div></td>
+            <td>{{ c.courseDetails }}</td>
+            <td class="num">{{ c.coursePrice | currency:'INR':'symbol':'1.0-2' }}</td>
+          </tr>
+        </tbody>
+        <tfoot><tr><td colspan="2" class="total-label">Total paid</td><td class="num total" id="orderTotal">{{ order.orderPrice | currency:'INR':'symbol':'1.0-2' }}</td></tr></tfoot>
+      </table>
+    </div>
+  </ng-container>
+</div>

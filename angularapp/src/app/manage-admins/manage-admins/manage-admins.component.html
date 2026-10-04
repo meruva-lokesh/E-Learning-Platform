@@ -1,0 +1,61 @@
+<div class="page">
+  <div class="page-head"><div><h2>Manage Admins</h2><p>Every admin can see this list. Only the main admin (set in application.properties) can add or remove admins.</p></div></div>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+
+  <div class="layout" [class.single]="!mainAdmin">
+    <section>
+      <div class="table-card">
+        <table class="data" id="adminTable">
+          <thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th></th></tr></thead>
+          <tbody>
+            <tr *ngFor="let a of pageItems">
+              <td>{{ a.username }} <span class="pill" *ngIf="isMe(a)">You</span></td>
+              <td>{{ a.email }}</td>
+              <td>{{ a.mobileNumber }}</td>
+              <td class="num"><button mat-stroked-button color="warn" class="remove-admin" *ngIf="mainAdmin && !isMe(a)" (click)="remove(a)"><mat-icon>person_remove</mat-icon>Remove</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <mat-paginator [length]="admins.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[5, 10, 25]" (page)="onPage($event)" showFirstLastButtons></mat-paginator>
+    </section>
+
+    <section class="form-card" *ngIf="mainAdmin">
+      <h2>Add admin</h2>
+      <form [formGroup]="form" #formDir="ngForm" (ngSubmit)="add(formDir)" novalidate>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput id="adminUsername" formControlName="username" />
+          <mat-error *ngIf="f['username'].errors?.['required']">Username is required</mat-error>
+          <mat-error *ngIf="f['username'].errors?.['minlength']">Username needs at least 3 characters</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput id="adminEmail" type="email" formControlName="email" />
+          <mat-error *ngIf="f['email'].errors?.['required']">Email is required</mat-error>
+          <mat-error *ngIf="f['email'].errors?.['email']">Enter a valid email</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile Number</mat-label>
+          <input matInput id="adminMobile" inputmode="numeric" maxlength="10" formControlName="mobileNumber" />
+          <mat-error *ngIf="f['mobileNumber'].errors?.['required']">Mobile number is required</mat-error>
+          <mat-error *ngIf="f['mobileNumber'].errors?.['pattern']">Enter a valid 10 digit mobile number</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput id="adminPassword" type="password" formControlName="password" autocomplete="new-password" />
+          <mat-hint>At least 8 characters, with a letter and a digit</mat-hint>
+          <mat-error *ngIf="f['password'].errors?.['required']">Password is required</mat-error>
+          <mat-error *ngIf="f['password'].errors?.['pattern']">Password needs at least 8 characters with a letter and a digit</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput id="adminConfirm" type="password" formControlName="confirmPassword" autocomplete="new-password" />
+          <mat-error *ngIf="f['confirmPassword'].errors?.['required']">Confirm password is required</mat-error>
+        </mat-form-field>
+        <div class="form-error small" *ngIf="form.errors?.['mismatch'] && f['confirmPassword'].dirty">Passwords do not match</div>
+        <div class="form-actions"><button mat-flat-button color="primary" type="submit" id="addAdminButton" [disabled]="form.invalid || saving">Add admin</button></div>
+      </form>
+    </section>
+  </div>
+</div>

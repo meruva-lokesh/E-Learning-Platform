@@ -1,0 +1,22 @@
+<article class="card">
+  <a class="cover" [routerLink]="['/course-details', course.courseId]" [attr.aria-label]="'View details of ' + course.courseType">
+    <img [src]="course.courseImageUrl" [alt]="course.courseType" loading="lazy" (error)="$any($event.target).style.display='none'" />
+    <span class="initial" aria-hidden="true">{{ course.courseType?.charAt(0) }}</span>
+  </a>
+  <div class="body">
+    <h3><a [routerLink]="['/course-details', course.courseId]">{{ course.courseType }}</a></h3>
+    <p>{{ course.courseDetails }}</p>
+    <app-star-rating [value]="rating?.averageRating || 0" [count]="rating?.reviewCount"></app-star-rating>
+    <span class="price">{{ course.coursePrice | currency:'INR':'symbol':'1.0-2' }}</span>
+  </div>
+  <div class="foot" *ngIf="mode === 'customer'">
+    <button mat-flat-button color="primary" class="add-cart" (click)="addToCart.emit(course)">
+      <mat-icon>add_shopping_cart</mat-icon>{{ inCart ? 'Added' : 'Add to Cart' }}
+    </button>
+    <a mat-stroked-button [routerLink]="['/course-details', course.courseId]">Details</a>
+  </div>
+  <div class="foot" *ngIf="mode === 'admin'">
+    <button mat-stroked-button color="primary" class="edit-btn" (click)="edit.emit(course)"><mat-icon>edit</mat-icon>Edit</button>
+    <button mat-stroked-button color="warn" class="delete-btn" (click)="remove.emit(course)"><mat-icon>delete</mat-icon>Delete</button>
+  </div>
+</article>

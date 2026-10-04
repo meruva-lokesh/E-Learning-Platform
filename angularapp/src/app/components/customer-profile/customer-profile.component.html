@@ -1,0 +1,36 @@
+<div class="page narrow">
+  <div class="page-head"><div><h2>My Profile</h2><p>Keep your details up to date. They are used when you enroll.</p></div></div>
+  <div class="grid">
+    <aside class="who">
+      <div class="avatar" aria-hidden="true">{{ initial }}</div>
+      <h3>{{ f['customerName'].value || username }}</h3>
+      <span class="pill">Customer</span>
+      <p class="muted" id="profileEmail">{{ email }}</p>
+    </aside>
+    <div class="form-card">
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" novalidate>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput id="profileName" formControlName="customerName" />
+          <mat-error *ngIf="f['customerName'].errors?.['required']">Name is required</mat-error>
+          <mat-error *ngIf="f['customerName'].errors?.['minlength']">Name needs at least 2 characters</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile number</mat-label>
+          <input matInput id="profileMobile" inputmode="numeric" maxlength="10" formControlName="mobileNumber" />
+          <mat-error *ngIf="f['mobileNumber'].errors">Enter a valid 10 digit mobile number</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>About you (Student / Professional)</mat-label>
+          <textarea matInput id="profileInfo" rows="3" formControlName="information"></textarea>
+          <mat-error *ngIf="f['information'].errors?.['required']">This field is required</mat-error>
+          <mat-error *ngIf="f['information'].errors?.['maxlength']">Keep it under 300 characters</mat-error>
+        </mat-form-field>
+        <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+        <div class="form-actions">
+          <button mat-flat-button color="primary" type="submit" id="saveProfile" [disabled]="profileForm.invalid || loading || profileForm.pristine">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

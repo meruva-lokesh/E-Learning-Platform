@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.angular/
+out-tsc/
+target/
+*.log
+.env
+.idea/
+.vscode/
+*.iml

@@ -1,0 +1,10 @@
+<div class="page">
+  <div class="empty err">
+    <mat-icon>{{ forbidden ? 'lock' : 'report_problem' }}</mat-icon>
+    <h2>{{ forbidden ? "You don't have access to this page" : "This page isn't available" }}</h2>
+    <p *ngIf="forbidden">This page is only for another type of account. Use the menu above to open the pages that belong to your account.</p>
+    <p *ngIf="!forbidden">The page you are looking for does not exist, or something went wrong on our side (404 / 500). Go back and try again. If it keeps happening, contact support.</p>
+    <a mat-flat-button color="primary" routerLink="/dashboard" *ngIf="loggedIn">Go to my dashboard</a>
+    <a mat-flat-button color="primary" routerLink="/login" *ngIf="!loggedIn">Go to login</a>
+  </div>
+</div>

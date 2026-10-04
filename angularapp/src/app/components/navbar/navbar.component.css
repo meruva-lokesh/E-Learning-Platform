@@ -1,0 +1,16 @@
+.bar { position: sticky; top: 0; z-index: 20; background: rgba(11,18,32,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.bar-inner { display: flex; align-items: center; gap: 20px; max-width: 1400px; min-height: 68px; margin: 0 auto; padding: 0 20px; }
+.brand { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; font: 800 20px var(--display); white-space: nowrap; }
+.brand mat-icon { width: 30px; height: 30px; font-size: 30px; color: var(--gold); }
+.spacer { flex: 1; }
+.links { display: flex; align-items: center; gap: 0; }
+.links a { white-space: nowrap; position: relative; display: inline-flex; align-items: center; padding: 8px 10px; color: var(--ink-2); font-weight: 600; font-size: 14.5px; text-decoration: none; border-radius: 8px; }
+.links a:hover { color: var(--gold-text); background: var(--primary-soft); }
+.links a.active { color: var(--gold-text); }
+.links a.active::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: -13px; height: 3px; border-radius: 3px; background: var(--primary); }
+.links .icon-link { padding: 8px; }
+.links .logout { margin-left: 10px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.compact { display: none; }
+@media (max-width: 1100px) { .links { display: none; } .compact { display: inline-flex; } }
+@media (max-width: 640px) { .brand { font-size: 17px; } }

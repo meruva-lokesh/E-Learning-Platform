@@ -1,0 +1,49 @@
+<div class="page">
+  <div class="form-card">
+    <h2>Add New Course</h2>
+    <p class="lead">Fields marked * are required.</p>
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>Course Type</mat-label>
+        <input matInput id="courseType" type="text" formControlName="courseType" />
+        <mat-error *ngIf="f['courseType'].errors?.['required']">Course type is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Course Image URL</mat-label>
+        <input matInput id="courseImageUrl" type="text" formControlName="courseImageUrl" placeholder="https://..." (input)="imgFailed = false" />
+        <mat-error *ngIf="f['courseImageUrl'].errors?.['required']">Course image URL is required</mat-error>
+        <mat-error *ngIf="f['courseImageUrl'].errors?.['pattern']">Enter a valid http(s) URL</mat-error>
+      </mat-form-field>
+
+      <div class="img-preview">
+        <img *ngIf="courseForm.value.courseImageUrl && !imgFailed"
+             [src]="courseForm.value.courseImageUrl"
+             (error)="imgFailed = true"
+             (load)="imgFailed = false"
+             alt="Course image preview">
+        <span *ngIf="!courseForm.value.courseImageUrl">Image preview appears here</span>
+        <span *ngIf="courseForm.value.courseImageUrl && imgFailed">This link is not a direct image. Right-click the image and choose "Copy image address".</span>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Course Details</mat-label>
+        <textarea matInput id="courseDetails" rows="3" formControlName="courseDetails"></textarea>
+        <mat-error *ngIf="f['courseDetails'].errors?.['required']">Course details are required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+        <span matTextPrefix>&#8377;&nbsp;</span>
+        <input matInput id="coursePrice" type="number" min="0" formControlName="coursePrice" />
+        <mat-error *ngIf="f['coursePrice'].errors?.['required']">Price is required</mat-error>
+        <mat-error *ngIf="f['coursePrice'].errors?.['min']">Price cannot be negative</mat-error>
+      </mat-form-field>
+
+      <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" id="addCourseButton" [disabled]="courseForm.invalid || loading">Add Course</button>
+      </div>
+    </form>
+  </div>
+</div>

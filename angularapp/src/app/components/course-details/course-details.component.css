@@ -1,0 +1,26 @@
+.band { background: linear-gradient(135deg, #0d1730, #1c2c55); color: #fff; }
+.band-inner { max-width: 1200px; margin: 0 auto; padding: 28px 20px 40px; }
+.band h1 { color: #fff; font-size: clamp(28px, 4vw, 42px); line-height: 1.15; margin: 8px 0 12px; max-width: 24ch; }
+.band .lead { max-width: 62ch; margin: 0 0 12px; color: #dfe2ff; font-size: 17px; }
+.back { color: #dfe2ff; margin-left: -12px; }
+.band app-star-rating { background: rgba(255,255,255,.12); display: inline-block; padding: 4px 10px; border-radius: 999px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start; padding-top: 28px; }
+.block { margin-bottom: 28px; padding: 24px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
+.block h2 { font-size: 22px; margin-bottom: 12px; }
+.block p { margin: 0 0 12px; line-height: 1.7; color: var(--ink-2); max-width: 70ch; }
+.points { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.points li { display: flex; gap: 10px; align-items: center; color: var(--ink-2); }
+.points mat-icon { color: var(--primary); }
+.review { display: flex; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
+.review:first-of-type { border-top: 0; }
+.avatar { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--primary-soft); color: var(--primary-dark); font-weight: 700; }
+.review p { margin: 6px 0 4px; }
+.empty.small { padding: 20px; box-shadow: none; background: var(--surface-2); }
+.buy { position: sticky; top: 84px; margin-top: -120px; overflow: hidden; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow-hover); }
+.preview { position: relative; aspect-ratio: 16 / 9; background: linear-gradient(135deg, #16213f, #1c2c55 55%, #f59e0b); }
+.preview img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.initial { position: absolute; inset: 0; display: grid; place-items: center; font: 800 56px var(--display); color: rgba(255,255,255,.85); }
+.buy-body { display: grid; gap: 12px; padding: 20px; }
+.price { font: 800 30px var(--display); }
+.wide { width: 100%; height: 46px; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .buy { position: static; margin-top: 0; order: -1; } }

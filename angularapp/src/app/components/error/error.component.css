@@ -1,0 +1,1 @@
+.err { max-width: 520px; margin: 40px auto; background: var(--surface); border-radius: 16px; border: 1px solid var(--line); box-shadow: var(--shadow); } .err h2 { font-size: 26px; } .err p { margin: 0 0 12px; line-height: 1.6; }

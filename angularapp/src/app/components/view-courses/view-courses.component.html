@@ -1,0 +1,24 @@
+<div class="page">
+  <div class="page-head">
+    <div><h2>Courses</h2><p>Everything customers can enroll in. Edit a course or remove it from the catalog.</p></div>
+    <a mat-flat-button color="primary" routerLink="/add-course"><mat-icon>add</mat-icon>Add Course</a>
+  </div>
+  <form class="toolbar" (ngSubmit)="search()">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="grow">
+      <mat-label>Search courses</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput id="adminSearch" name="adminSearch" [(ngModel)]="keyword" />
+    </mat-form-field>
+    <button mat-stroked-button color="primary" type="submit">Search</button>
+    <span class="muted" *ngIf="loaded">{{ totalElements }} course{{ totalElements === 1 ? '' : 's' }}</span>
+  </form>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+  <div class="empty" *ngIf="loaded && !errorMessage && courses.length === 0">
+    <mat-icon>library_books</mat-icon><h3>No courses found</h3><p>Add a course, or change your search.</p>
+    <a mat-flat-button color="primary" routerLink="/add-course">Add Course</a>
+  </div>
+  <div class="course-grid">
+    <app-course-card *ngFor="let course of courses" mode="admin" [course]="course" [rating]="ratingFor(course)" (edit)="edit($event)" (remove)="delete($event)"></app-course-card>
+  </div>
+  <mat-paginator *ngIf="totalElements > pageSize" [length]="totalElements" [pageSize]="pageSize" [pageIndex]="page" [hidePageSize]="true" (page)="onPage($event)" showFirstLastButtons></mat-paginator>
+</div>

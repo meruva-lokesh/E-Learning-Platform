@@ -1,0 +1,63 @@
+<header class="bar">
+  <div class="bar-inner">
+    <a class="brand" [routerLink]="role ? '/dashboard' : '/'">
+      <mat-icon>school</mat-icon><span>Online E-Learning Platform</span>
+    </a>
+
+    <span class="spacer"></span>
+
+    <nav class="links" aria-label="Main">
+      <ng-container *ngIf="!role">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/registration" routerLinkActive="active">Register</a>
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      </ng-container>
+
+      <ng-container *ngIf="role === 'ADMIN'">
+        <a routerLink="/dashboard" routerLinkActive="active">Home</a>
+        <a routerLink="/view-courses" routerLinkActive="active">View Courses</a>
+        <a routerLink="/add-course" routerLinkActive="active">Add Course</a>
+        <a routerLink="/view-orders" routerLinkActive="active">View Enrollments</a>
+        <a routerLink="/view-review" routerLinkActive="active">View Reviews</a>
+        <a routerLink="/manage-admins" routerLinkActive="active">Manage Admins</a>
+      </ng-container>
+
+      <ng-container *ngIf="role === 'CUSTOMER'">
+        <a routerLink="/dashboard" routerLinkActive="active">Home</a>
+        <a routerLink="/customer-view-courses" routerLinkActive="active">Available Courses</a>
+        <a routerLink="/my-orders" routerLinkActive="active">My Enrollments</a>
+        <a routerLink="/add-review" routerLinkActive="active">Add Review</a>
+        <a routerLink="/my-cart" routerLinkActive="active" class="icon-link" aria-label="My Cart" title="My Cart"><mat-icon>shopping_cart</mat-icon><span class="sr-only">My Cart</span></a>
+        <a routerLink="/customer-profile" routerLinkActive="active" class="icon-link" aria-label="My Profile" title="My Profile"><mat-icon>account_circle</mat-icon><span class="sr-only">My Profile</span></a>
+      </ng-container>
+
+      <button mat-stroked-button color="primary" class="logout" id="logoutButton" *ngIf="role" (click)="askLogout()">Logout</button>
+    </nav>
+
+    <button mat-icon-button class="compact" [matMenuTriggerFor]="menu" aria-label="Open menu"><mat-icon>menu</mat-icon></button>
+    <mat-menu #menu="matMenu">
+      <ng-container *ngIf="!role">
+        <a mat-menu-item routerLink="/">Home</a>
+        <a mat-menu-item routerLink="/registration">Register</a>
+        <a mat-menu-item routerLink="/login">Login</a>
+      </ng-container>
+      <ng-container *ngIf="role === 'ADMIN'">
+        <a mat-menu-item routerLink="/dashboard">Home</a>
+        <a mat-menu-item routerLink="/view-courses">View Courses</a>
+        <a mat-menu-item routerLink="/add-course">Add Course</a>
+        <a mat-menu-item routerLink="/view-orders">View Enrollments</a>
+        <a mat-menu-item routerLink="/view-review">View Reviews</a>
+        <a mat-menu-item routerLink="/manage-admins">Manage Admins</a>
+      </ng-container>
+      <ng-container *ngIf="role === 'CUSTOMER'">
+        <a mat-menu-item routerLink="/dashboard">Home</a>
+        <a mat-menu-item routerLink="/customer-view-courses">Available Courses</a>
+        <a mat-menu-item routerLink="/my-cart">My Cart</a>
+        <a mat-menu-item routerLink="/my-orders">My Enrollments</a>
+        <a mat-menu-item routerLink="/add-review">Add Review</a>
+        <a mat-menu-item routerLink="/customer-profile">My Profile</a>
+      </ng-container>
+      <button mat-menu-item *ngIf="role" (click)="askLogout()">Logout</button>
+    </mat-menu>
+  </div>
+</header>

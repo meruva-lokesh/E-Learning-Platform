@@ -1,0 +1,57 @@
+<div class="band" *ngIf="course">
+  <div class="band-inner">
+    <button mat-button class="back" (click)="back()"><mat-icon>arrow_back</mat-icon>All courses</button>
+    <h1 id="courseTitle">{{ course.courseType }}</h1>
+    <p class="lead">{{ course.courseDetails }}</p>
+    <app-star-rating [value]="average" [count]="reviews.length"></app-star-rating>
+  </div>
+</div>
+
+<div class="page" *ngIf="!course && loaded">
+  <div class="empty"><mat-icon>search_off</mat-icon><h3>Course not found</h3><p>{{ errorMessage }}</p>
+    <button mat-flat-button color="primary" (click)="back()">Back to courses</button></div>
+</div>
+
+<div class="page layout" *ngIf="course">
+  <main>
+    <section class="block">
+      <h2>About this course</h2>
+      <p>{{ course.courseDetails }}</p>
+      <ul class="points">
+        <li><mat-icon>all_inclusive</mat-icon>Learn at your own pace, on any device</li>
+        <li><mat-icon>workspace_premium</mat-icon>Skills you can use at work and in studies</li>
+        <li><mat-icon>event_available</mat-icon>Enroll once, access from your enrollments</li>
+      </ul>
+    </section>
+
+    <section class="block" id="reviews">
+      <h2>Learner reviews</h2>
+      <div class="empty small" *ngIf="reviews.length === 0"><p>No reviews yet. Enrolled learners can add the first one.</p></div>
+      <article class="review" *ngFor="let r of reviews">
+        <div class="avatar" aria-hidden="true">{{ r.customer?.customerName?.charAt(0) || '?' }}</div>
+        <div>
+          <strong>{{ r.customer?.customerName || 'Learner' }}</strong>
+          <app-star-rating [value]="r.rating || 0" [count]="1"></app-star-rating>
+          <p>{{ r.body }}</p>
+          <small class="muted">{{ r.dateCreated | date:'mediumDate' }}</small>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <aside class="buy">
+    <div class="preview">
+      <img *ngIf="course.courseImageUrl" [src]="course.courseImageUrl" [alt]="course.courseType" (error)="$any($event.target).style.display='none'" />
+      <span class="initial" aria-hidden="true">{{ course.courseType?.charAt(0) }}</span>
+    </div>
+    <div class="buy-body">
+      <div class="price">{{ course.coursePrice | currency:'INR':'symbol':'1.0-2' }}</div>
+      <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+      <ng-container *ngIf="isCustomer">
+        <button mat-flat-button color="primary" class="wide" id="enrollFromDetails" (click)="addToCart(true)">Enroll now</button>
+        <button mat-stroked-button color="primary" class="wide" id="addToCartFromDetails" (click)="addToCart()"><mat-icon>add_shopping_cart</mat-icon>Add to Cart</button>
+      </ng-container>
+      <a mat-stroked-button color="primary" class="wide" *ngIf="role === 'ADMIN'" [routerLink]="['/edit-course', course.courseId]"><mat-icon>edit</mat-icon>Edit course</a>
+    </div>
+  </aside>
+</div>

@@ -1,0 +1,7 @@
+.grid { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; }
+.who { display: grid; justify-items: center; gap: 8px; padding: 28px 20px; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); text-align: center; }
+.avatar { display: grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, #1c2c55, #f59e0b); color: #fff; font: 800 34px var(--display); }
+.who h3 { font-size: 20px; }
+.who p { margin: 0; word-break: break-all; font-size: 14px; }
+.form-card { max-width: none; margin: 0; width: 100%; }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }

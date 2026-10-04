@@ -1,0 +1,6 @@
+.rating { margin: 4px 0 12px; }
+.rating-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 14px; }
+.stars-input { display: flex; gap: 2px; }
+.star { color: rgba(255,255,255,.22); }
+.star.on { color: #fbb92b; }
+.form-note.ok { background: rgba(52,211,153,.12); color: #34d399; }

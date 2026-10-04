@@ -1,0 +1,22 @@
+<div class="page">
+  <div class="form-card">
+    <h2>Fill Your Details</h2>
+    <p class="lead">Tell us a little about you once. We use it when you enroll.</p>
+    <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput id="customerName" type="text" formControlName="customerName" />
+        <mat-error *ngIf="f['customerName'].errors?.['required']">Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>What are you (Student / professional)</mat-label>
+        <textarea matInput id="information" rows="3" formControlName="information"></textarea>
+        <mat-error *ngIf="f['information'].errors?.['required']">This field is required</mat-error>
+      </mat-form-field>
+      <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" id="submitDetails" [disabled]="detailsForm.invalid || loading">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>

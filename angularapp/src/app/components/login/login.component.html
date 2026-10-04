@@ -1,0 +1,42 @@
+<div class="auth">
+  <section class="auth-hero">
+    <h1>Learn at your own pace.</h1>
+    <p>Browse courses, enroll in a few clicks and share what you thought of them. Pick up where you left off, on any device.</p>
+    <ul>
+      <li><mat-icon>menu_book</mat-icon>Courses from beginner lessons to certifications</li>
+      <li><mat-icon>shopping_cart</mat-icon>Add to cart and enroll in one step</li>
+      <li><mat-icon>star</mat-icon>Rate courses to help other learners</li>
+    </ul>
+  </section>
+
+  <section class="auth-form">
+    <div class="form-card">
+      <h2>Login</h2>
+      <p class="lead">Welcome back. Sign in to continue.</p>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput id="email" type="email" formControlName="email" autocomplete="username" />
+          <mat-icon matSuffix>mail</mat-icon>
+          <mat-error *ngIf="email?.errors?.['required']">Email is required</mat-error>
+          <mat-error *ngIf="email?.errors?.['email']">Enter a valid email</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" autocomplete="current-password" />
+          <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="password?.errors?.['required']">Password is required</mat-error>
+        </mat-form-field>
+
+        <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+        <button mat-flat-button color="primary" type="submit" id="loginButton" [disabled]="loginForm.invalid || loading">
+          {{ loading ? 'Signing in...' : 'Login' }}
+        </button>
+      </form>
+      <p class="alt">Don't have an account? <a routerLink="/registration">Register here</a></p>
+    </div>
+  </section>
+</div>

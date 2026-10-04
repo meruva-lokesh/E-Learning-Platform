@@ -1,0 +1,6 @@
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 24px; align-items: start; }
+.form-card { max-width: none; margin: 0; padding: 24px; }
+.form-card h2 { font-size: 20px; margin-bottom: 14px; }
+@media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+.layout.single { grid-template-columns: 1fr; }
+mat-paginator { margin-top: 12px; border-radius: 12px; }

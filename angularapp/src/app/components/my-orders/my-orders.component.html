@@ -1,0 +1,31 @@
+<div class="page">
+  <div class="page-head">
+    <div><h2>My Enrollments</h2><p>Courses you have enrolled in.</p></div>
+    <button mat-flat-button color="primary" *ngIf="orders.length > 0" id="addReviewButton" (click)="addReview()"><mat-icon>rate_review</mat-icon>Add Review</button>
+  </div>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+  <div class="empty" *ngIf="loaded && !errorMessage && orders.length === 0">
+    <mat-icon>school</mat-icon><h3>No enrollments yet</h3><p>Once you enroll in a course, it shows up here.</p>
+    <a mat-flat-button color="primary" routerLink="/customer-view-courses">Browse courses</a>
+  </div>
+
+  <div class="orders">
+    <section class="order" *ngFor="let order of pageItems">
+      <header><div><span>Order #{{ order.orderId }}</span><strong>{{ order.orderPrice | currency:'INR':'symbol':'1.0-2' }}</strong></div><a mat-stroked-button color="primary" class="details-link" [routerLink]="['/order-details', order.orderId]">View details</a></header>
+      <div class="table-card inner">
+        <table class="data">
+          <thead><tr><th>Image</th><th>Type</th><th>Details</th><th class="num">Price</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of order.courses">
+              <td><img class="thumb" [src]="c.courseImageUrl" [alt]="c.courseType" /></td>
+              <td>{{ c.courseType }}</td>
+              <td>{{ c.courseDetails }}</td>
+              <td class="num">{{ c.coursePrice | currency:'INR':'symbol':'1.0-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <mat-paginator *ngIf="orders.length > pageSize" [length]="orders.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[3, 6, 12]" (page)="onPage($event)" showFirstLastButtons></mat-paginator>
+</div>
