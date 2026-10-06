@@ -1,0 +1,35 @@
+<div class="page narrow">
+  <section class="form-card verify" *ngIf="!checking || error">
+    <div class="icon"><mat-icon>{{ done ? 'verified' : 'sms' }}</mat-icon></div>
+
+    <ng-container *ngIf="!done">
+      <h2>Verify your mobile number</h2>
+      <p class="muted">We sent a 6 digit code by SMS to the mobile number you gave when you registered with <strong>{{ email }}</strong>. The code works for 5 minutes.</p>
+
+      <p class="form-note" *ngIf="devCode" id="devCodeNote">Development mode: no SMS was sent. Your code is <strong id="devCode">{{ devCode }}</strong>.</p>
+      <div class="form-error" role="alert" *ngIf="error"><mat-icon>error_outline</mat-icon>{{ error }}</div>
+
+      <form (ngSubmit)="verify()" novalidate>
+        <label class="field" for="otpCode">Verification code</label>
+        <input id="otpCode" name="code" class="code" type="text" inputmode="numeric" autocomplete="one-time-code"
+               maxlength="6" placeholder="------" [(ngModel)]="code" (ngModelChange)="onCodeInput()" [disabled]="verifying" />
+        <button mat-flat-button color="primary" class="solid" id="verifyOtp" type="submit" [disabled]="!canVerify">
+          {{ verifying ? 'Checking...' : 'Verify' }}
+        </button>
+      </form>
+
+      <p class="resend">
+        Did not get it?
+        <button type="button" class="link" id="resendOtp" (click)="sendCode()" [disabled]="sending || secondsLeft > 0">
+          {{ secondsLeft > 0 ? 'Resend in ' + secondsLeft + 's' : (sending ? 'Sending...' : 'Resend code') }}
+        </button>
+      </p>
+    </ng-container>
+
+    <ng-container *ngIf="done">
+      <h2>Mobile number verified</h2>
+      <p class="muted" id="verifiedNote">Thank you. Taking you to the login page...</p>
+      <a mat-flat-button color="primary" class="solid" routerLink="/login">Log in now</a>
+    </ng-container>
+  </section>
+</div>

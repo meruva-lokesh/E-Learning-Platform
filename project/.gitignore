@@ -1,0 +1,28 @@
+node_modules/
+dist/
+.angular/
+out-tsc/
+target/
+*.log
+.env
+.idea/
+.vscode/
+*.iml
+uploads/
+video-files/
+# Secrets
+.env
+*.env
+application-local.properties
+application-secret.properties
+
+# Java
+**/target/
+
+# Angular
+**/node_modules/
+**/dist/
+
+# Runtime files
+uploads/*
+video-files/*

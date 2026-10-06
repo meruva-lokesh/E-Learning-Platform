@@ -1,0 +1,30 @@
+<div class="page">
+  <div class="page-head"><div><h2>My Cart</h2><p>Review your courses, then enroll.</p></div></div>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+  <div class="empty" *ngIf="loaded && courses.length === 0">
+    <mat-icon>shopping_cart</mat-icon><h3>Your cart is empty</h3><p>Add courses from the catalog to enroll.</p>
+    <a mat-flat-button color="primary" routerLink="/customer-view-courses">Browse courses</a>
+  </div>
+
+  <div class="form-error" role="alert" id="ownedWarning" *ngIf="ownedInCart.length > 0"><mat-icon>info</mat-icon>You are already enrolled in {{ ownedInCart.length === 1 ? 'one course' : ownedInCart.length + ' courses' }} in your cart. Remove {{ ownedInCart.length === 1 ? 'it' : 'them' }} to continue.</div>
+
+  <div class="cart-layout" *ngIf="courses.length > 0">
+    <div class="cart-list">
+      <article class="cart-item" *ngFor="let course of courses">
+        <div class="cart-img"><img [src]="course.courseImageUrl" [alt]="course.courseType" (error)="$any($event.target).style.display='none'" /></div>
+        <div class="cart-info">
+          <h3>{{ course.courseType }}<span class="owned-tag" *ngIf="course.courseId != null && owned.has(course.courseId)">Already enrolled</span></h3>
+          <p>{{ course.courseDetails }}</p>
+          <span class="price">{{ course.coursePrice | currency:'INR':'symbol':'1.0-2' }}</span>
+        </div>
+        <button mat-stroked-button color="warn" class="remove-btn" (click)="remove(course)"><mat-icon>delete</mat-icon>Remove from Cart</button>
+      </article>
+    </div>
+    <aside class="summary">
+      <h3>Summary</h3>
+      <div class="row"><span>Courses</span><strong>{{ courses.length }}</strong></div>
+      <div class="row total"><span>Total</span><strong id="cartTotal">{{ totalAmount | currency:'INR':'symbol':'1.0-2' }}</strong></div>
+      <button mat-flat-button color="primary" id="enrollNow" [disabled]="ownedInCart.length > 0" (click)="enrollNow()">Enroll Now</button>
+    </aside>
+  </div>
+</div>

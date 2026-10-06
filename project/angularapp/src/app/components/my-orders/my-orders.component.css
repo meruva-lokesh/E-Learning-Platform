@@ -1,0 +1,6 @@
+.orders { display: grid; gap: 20px; }
+.order header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; padding: 0 4px; color: var(--muted); }
+.order header div { display: grid; }
+.order header strong { font: 800 22px var(--display); color: var(--ink); }
+mat-paginator { margin-top: 20px; border-radius: 12px; }
+.hd-actions { display: inline-flex; gap: 8px; flex-wrap: wrap; }

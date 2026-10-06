@@ -1,0 +1,14 @@
+/* Instructor: earnings (Midnight) */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 8px; }
+.stat { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.stat span { color: var(--muted); font-size: 13.5px; }
+.stat strong { font: 800 26px var(--display); color: var(--ink); }
+.stat.wait strong { color: var(--gold-text); }
+.stat.ok strong { color: var(--ok); }
+.note { margin: 6px 0 24px; color: var(--muted); font-size: 14px; }
+h3 { margin: 26px 0 10px; font-size: 18px; }
+.empty { padding: 18px 0; color: var(--muted); }
+.num { text-align: right; }
+.chip { padding: 3px 12px; border-radius: 999px; font: 700 12.5px Inter, sans-serif; }
+.chip.wait { background: var(--gold-soft); color: var(--gold-text); }
+.chip.ok { background: rgba(52, 211, 153, .14); color: var(--ok); }

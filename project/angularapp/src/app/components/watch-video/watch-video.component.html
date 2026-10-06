@@ -1,0 +1,45 @@
+<div class="page watch">
+  <div class="page-head">
+    <div>
+      <h2>Course lessons</h2>
+      <p *ngIf="isCustomer">Your place is saved automatically, so you can continue any time.</p>
+      <p *ngIf="!isCustomer">Preview of the lessons as customers see them. Watch progress is only kept for customers.</p>
+    </div>
+    <button mat-stroked-button class="ghost" type="button" id="backButton" (click)="back()">{{ isCustomer ? 'My learning' : 'Manage videos' }}</button>
+  </div>
+
+  <p class="empty" *ngIf="loading">Loading lessons...</p>
+  <div class="form-error" role="alert" id="watchError" *ngIf="error"><mat-icon>error_outline</mat-icon>{{ error }}</div>
+  <p class="empty" id="noLessons" *ngIf="!loading && !error && !videos.length">No lessons have been added to this course yet.</p>
+
+  <div class="layout" *ngIf="videos.length">
+    <section class="stage">
+      <div class="screen">
+        <video #player id="player" *ngIf="src" [src]="src" controls controlsList="nodownload" playsinline preload="metadata"
+               (loadedmetadata)="onMetadata()" (play)="onPlay()" (pause)="onPause()" (ended)="onEnded()" (error)="onError()"></video>
+        <div class="loading-screen" *ngIf="!src && !playError">Opening the lesson...</div>
+        <div class="loading-screen bad" id="playError" *ngIf="playError">{{ playError }}</div>
+      </div>
+      <div class="info" *ngIf="current">
+        <h3 id="currentTitle">{{ current.title }}</h3>
+        <p class="muted" *ngIf="current.description">{{ current.description }}</p>
+        <p class="resume" id="resumeNote" *ngIf="resumedAt > 0">Continuing from {{ fmtDuration(resumedAt) }}</p>
+        <span class="done" id="completedBadge" *ngIf="isCustomer && current.progress?.completed"><mat-icon>check_circle</mat-icon>Completed</span>
+      </div>
+    </section>
+
+    <aside class="list" aria-label="Lessons">
+      <h3>Lessons</h3>
+      <ol>
+        <li *ngFor="let v of videos; let i = index; trackBy: trackById" [attr.id]="'lesson' + v.id" [class.on]="current?.id === v.id">
+          <button type="button" (click)="open(v)">
+            <span class="n"><mat-icon *ngIf="isCustomer && v.progress?.completed; else num">check_circle</mat-icon><ng-template #num>{{ i + 1 }}</ng-template></span>
+            <span class="t"><strong>{{ v.title }}</strong>
+              <small>{{ fmtDuration(v.durationSec) }}<span *ngIf="isCustomer && v.progress && !v.progress.completed && v.progress.percent > 0"> &middot; {{ v.progress.percent }}% watched</span></small>
+            </span>
+          </button>
+        </li>
+      </ol>
+    </aside>
+  </div>
+</div>

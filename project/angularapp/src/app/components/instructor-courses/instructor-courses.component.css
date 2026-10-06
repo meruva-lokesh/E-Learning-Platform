@@ -1,0 +1,15 @@
+/* Instructor: my courses (Midnight) */
+.editor { max-width: 640px; margin: 0 0 24px; }
+.editor h3 { font-size: 20px; margin-bottom: 12px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.empty { padding: 40px 0; text-align: center; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
+.card { display: flex; flex-direction: column; gap: 12px; padding: 14px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.thumb { height: 150px; border-radius: 10px; overflow: hidden; background: var(--surface-2); display: grid; place-items: center; color: var(--muted); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb mat-icon { font-size: 44px; width: 44px; height: 44px; }
+.body { flex: 1; }
+.body h3 { font-size: 17px; margin-bottom: 6px; }
+.body p { margin: 0 0 10px; color: var(--muted); font-size: 14px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.price { font: 800 18px var(--display); color: var(--gold-text); }
+.danger { color: var(--danger); border-color: rgba(248, 113, 113, .5); }

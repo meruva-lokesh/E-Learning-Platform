@@ -1,0 +1,116 @@
+<div class="page home">
+  <!-- welcome -->
+  <section class="welcome">
+    <div class="welcome-text">
+      <span class="badge" *ngIf="profile?.status === 'APPROVED'"><mat-icon>verified</mat-icon>Approved instructor</span>
+      <h1 id="homeGreeting">Welcome back, {{ name }}</h1>
+      <p *ngIf="profile">{{ profile.expertise }}<span *ngIf="profile.qualification"> &middot; {{ profile.qualification }}</span></p>
+      <p *ngIf="!profile && !loading">Here is a quick look at your teaching.</p>
+    </div>
+    <div class="welcome-actions">
+      <a mat-flat-button color="primary" class="solid" id="addCourseCta" routerLink="/instructor/courses">
+        <mat-icon>add</mat-icon>Add a course</a>
+      <a mat-stroked-button class="ghost" id="videosCta" routerLink="/manage-videos"><mat-icon>video_library</mat-icon>Upload videos</a>
+    </div>
+  </section>
+
+  <p class="muted center" *ngIf="loading" id="homeLoading">Loading your dashboard...</p>
+
+  <ng-container *ngIf="!loading">
+    <!-- numbers -->
+    <section class="stats" aria-label="Your numbers">
+      <article class="stat">
+        <mat-icon>menu_book</mat-icon>
+        <div><strong id="statCourses">{{ courses.length }}</strong><span>Courses</span></div>
+      </article>
+      <article class="stat">
+        <mat-icon>shopping_bag</mat-icon>
+        <div><strong id="statSales">{{ sales }}</strong><span>Sales</span></div>
+      </article>
+      <article class="stat">
+        <mat-icon>payments</mat-icon>
+        <div><strong id="statEarned">{{ earnings ? rupees(earnings.totalPaise) : '-' }}</strong><span>Total earned</span></div>
+      </article>
+      <article class="stat accent">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <div><strong id="statPending">{{ earnings ? rupees(earnings.pendingPaise) : '-' }}</strong><span>Waiting for payout</span></div>
+      </article>
+    </section>
+
+    <p class="form-error" role="alert" id="earningsFailed" *ngIf="failed.earnings"><mat-icon>error_outline</mat-icon>Earnings could not be loaded right now.</p>
+
+    <div class="cols">
+      <!-- left: courses and sales -->
+      <div class="col">
+        <section class="panel">
+          <header>
+            <h2>Your courses</h2>
+            <a routerLink="/instructor/courses" class="more" id="allCourses">Manage all</a>
+          </header>
+          <p class="form-error" role="alert" *ngIf="failed.courses"><mat-icon>error_outline</mat-icon>Your courses could not be loaded right now.</p>
+          <ul class="rows" id="courseList" *ngIf="recentCourses.length">
+            <li *ngFor="let c of recentCourses; trackBy: trackCourse">
+              <span class="thumb"><img *ngIf="c.courseImageUrl" [src]="c.courseImageUrl" alt="" loading="lazy" /><mat-icon *ngIf="!c.courseImageUrl">menu_book</mat-icon></span>
+              <div class="grow"><strong>{{ c.courseType }}</strong><span class="muted">{{ price(c.coursePrice) }}</span></div>
+              <a mat-button class="soft" routerLink="/manage-videos">Videos</a>
+            </li>
+          </ul>
+          <div class="empty" id="noCourses" *ngIf="!recentCourses.length && !failed.courses">
+            <mat-icon>auto_stories</mat-icon>
+            <h3>No courses yet</h3>
+            <p>Add your first course and learners can find it in the catalogue straight away.</p>
+            <a mat-flat-button color="primary" class="solid" routerLink="/instructor/courses">Add your first course</a>
+          </div>
+        </section>
+
+        <section class="panel">
+          <header>
+            <h2>Recent sales</h2>
+            <a routerLink="/instructor/earnings" class="more" id="allEarnings">All earnings</a>
+          </header>
+          <ul class="rows" id="recentSales" *ngIf="recentSales.length">
+            <li *ngFor="let e of recentSales">
+              <span class="thumb sale"><mat-icon>receipt_long</mat-icon></span>
+              <div class="grow"><strong>{{ e.courseTitle }}</strong><span class="muted">{{ e.createdAt | date: 'd MMM y' }} &middot; {{ e.status === 'PAID_OUT' ? 'Paid out' : 'Waiting for payout' }}</span></div>
+              <b class="amount">{{ rupees(e.ownerPaise) }}</b>
+            </li>
+          </ul>
+          <div class="empty small" id="noSales" *ngIf="!recentSales.length && !failed.earnings">
+            <mat-icon>hourglass_empty</mat-icon>
+            <p>No sales yet. Your share of every enrolment appears here.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- right: checklist, shortcuts, profile -->
+      <aside class="col side">
+        <section class="panel">
+          <header><h2>Getting started</h2><span class="progress" id="stepCount">{{ doneSteps }} of 2</span></header>
+          <ul class="checklist">
+            <li [class.done]="hasCourse" id="stepCourse"><mat-icon>{{ hasCourse ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon><span>Add your first course</span></li>
+            <li [class.done]="hasSale" id="stepSale"><mat-icon>{{ hasSale ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon><span>Get your first enrolment</span></li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <header><h2>Shortcuts</h2></header>
+          <nav class="shortcuts" aria-label="Shortcuts">
+            <a routerLink="/instructor/courses"><mat-icon>edit_note</mat-icon><span>Edit my courses</span></a>
+            <a routerLink="/manage-videos"><mat-icon>video_library</mat-icon><span>Manage videos</span></a>
+            <a routerLink="/instructor/earnings"><mat-icon>account_balance_wallet</mat-icon><span>Earnings and payouts</span></a>
+          </nav>
+        </section>
+
+        <section class="panel" *ngIf="profile">
+          <header><h2>Your profile</h2></header>
+          <dl class="facts">
+            <div><dt>Qualification</dt><dd>{{ profile.qualification }}</dd></div>
+            <div><dt>Experience</dt><dd>{{ profile.experienceYears }} years</dd></div>
+            <div><dt>Expertise</dt><dd>{{ profile.expertise }}</dd></div>
+            <div *ngIf="profile.reviewedAt"><dt>Approved on</dt><dd>{{ profile.reviewedAt | date: 'd MMM y' }}</dd></div>
+          </dl>
+        </section>
+      </aside>
+    </div>
+  </ng-container>
+</div>

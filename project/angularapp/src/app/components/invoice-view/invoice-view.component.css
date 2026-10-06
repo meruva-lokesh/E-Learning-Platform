@@ -1,0 +1,19 @@
+/* Customer: one invoice (Midnight) */
+.head-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.empty { padding: 40px 0; text-align: center; color: var(--muted); }
+.sheet { max-width: 760px; padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 22px; }
+.sheet header { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.sheet h3 { font-size: 22px; margin: 0 0 8px; }
+.seller { display: block; color: var(--ink); }
+.line { display: block; color: var(--muted); font-size: 13.5px; }
+dl { margin: 0; display: grid; gap: 6px; }
+dl div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; }
+dt { font: 700 12.5px var(--display); color: var(--gold-text); }
+dd { margin: 0; color: var(--ink-2); overflow-wrap: anywhere; }
+.billed { display: flex; flex-direction: column; gap: 2px; }
+.label { font: 700 12.5px var(--display); color: var(--gold-text); }
+.num { text-align: right; }
+.totals { align-self: flex-end; min-width: 300px; display: grid; gap: 6px; }
+.totals div { display: flex; justify-content: space-between; gap: 24px; color: var(--ink-2); }
+.totals .grand { margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--ink); font: 800 19px var(--display); }
+@media (max-width: 520px) { .sheet { padding: 18px; } .totals { min-width: 0; width: 100%; } }

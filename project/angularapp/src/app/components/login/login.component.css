@@ -1,0 +1,19 @@
+.auth { display: grid; grid-template-columns: 1.05fr 1fr; min-height: calc(100vh - 64px); }
+.auth-hero { display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 56px clamp(24px, 6vw, 88px); color: #e8ecf5; background: linear-gradient(160deg, #0d1730 0%, #1c2c55 70%); }
+.auth-hero h1 { color: #fff; font-size: clamp(34px, 4.2vw, 52px); line-height: 1.1; max-width: 14ch; }
+.auth-hero p { margin: 0; max-width: 44ch; line-height: 1.65; color: #b9c3d8; }
+.auth-hero ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.auth-hero li { display: flex; align-items: center; gap: 12px; color: #dfe5f1; }
+.auth-hero li mat-icon { color: #fbb92b; }
+.auth-form { display: flex; align-items: center; justify-content: center; padding: 32px 20px; }
+.auth-form .form-card { width: 100%; }
+.alt { margin: 18px 0 0; text-align: center; color: var(--muted); font-size: 14px; }
+@media (max-width: 860px) { .auth { grid-template-columns: 1fr; } .auth-hero { padding: 32px 22px; } .auth-hero ul { display: none; } .auth-hero h1 { max-width: none; } }
+
+/* Login with Google */
+.or { display: flex; align-items: center; gap: 12px; margin: 20px 0 14px; color: var(--muted); font-size: 13px; }
+.or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.google-btn { display: flex; justify-content: center; min-height: 44px; }
+
+.forgot { margin: -6px 0 12px; text-align: right; font-size: 14px; }
+.err-link { margin-left: auto; font-weight: 700; color: var(--gold-text); }

@@ -1,0 +1,65 @@
+<footer class="foot" role="contentinfo">
+  <div class="foot-glow" aria-hidden="true"></div>
+
+  <div class="foot-inner">
+    <div class="about">
+      <a class="brand" [routerLink]="role === 'INSTRUCTOR' ? '/instructor' : role ? '/dashboard' : '/'">
+        <mat-icon>school</mat-icon><span>Online E-Learning Platform</span>
+      </a>
+      <p>Learn at your own pace with expert-led courses, AI-powered search, instant quizzes and real learner reviews.</p>
+      <ul class="trust" aria-label="Why learners trust us">
+        <li><mat-icon>verified_user</mat-icon>Secure Razorpay payments</li>
+        <li><mat-icon>auto_awesome</mat-icon>AI quiz and study chatbot</li>
+        <li><mat-icon>receipt_long</mat-icon>Instant invoices</li>
+      </ul>
+    </div>
+
+    <nav class="col" aria-label="Explore">
+      <h2>Explore</h2>
+      <ng-container *ngIf="!role">
+        <a routerLink="/">Home</a>
+        <a routerLink="/registration">Create an account</a>
+        <a routerLink="/login">Log in</a>
+      </ng-container>
+      <ng-container *ngIf="role === 'CUSTOMER'">
+        <a routerLink="/dashboard">Home</a>
+        <a routerLink="/customer-view-courses">Available courses</a>
+        <a routerLink="/my-orders">My enrollments</a>
+        <a routerLink="/my-cart">My cart</a>
+      </ng-container>
+      <ng-container *ngIf="role === 'ADMIN'">
+        <a routerLink="/dashboard">Home</a>
+        <a routerLink="/view-courses">View courses</a>
+        <a routerLink="/add-course">Add course</a>
+        <a routerLink="/view-orders">View enrollments</a>
+        <a routerLink="/admin-instructors">Instructor requests</a>
+      </ng-container>
+      <ng-container *ngIf="role === 'INSTRUCTOR'">
+        <a routerLink="/instructor">Home</a>
+        <a routerLink="/instructor/courses">My courses</a>
+        <a routerLink="/instructor/earnings">Earnings</a>
+      </ng-container>
+    </nav>
+
+    <nav class="col" aria-label="Teach with us" *ngIf="!role || role === 'INSTRUCTOR'">
+      <h2>Teach with us</h2>
+      <a routerLink="/instructor-register">Become an instructor</a>
+      <a routerLink="/instructor-register" [queryParams]="{ tab: 'check' }">Check my application</a>
+      <a routerLink="/forgot-password" *ngIf="!role">Forgot password</a>
+    </nav>
+
+    <div class="col" *ngIf="role === 'CUSTOMER' || role === 'ADMIN'">
+      <h2>Why learn here</h2>
+      <span><mat-icon>menu_book</mat-icon>Wide range of courses</span>
+      <span><mat-icon>auto_awesome</mat-icon>AI course search</span>
+      <span><mat-icon>star</mat-icon>Real learner reviews</span>
+    </div>
+  </div>
+
+  <div class="legal">
+    <span>&copy; {{ year }} Online E-Learning Platform. All rights reserved.</span>
+    <button type="button" class="top" id="backToTop" (click)="toTop()" aria-label="Back to top">
+      <mat-icon>arrow_upward</mat-icon>Back to top
+    </button>
+  </div>
+</footer>

@@ -1,0 +1,109 @@
+<div class="page narrow">
+  <div class="page-head">
+    <div>
+      <h2>AI Quiz</h2>
+      <p>Test yourself on any course. The AI writes fresh questions each time, and you get an explanation for every answer.</p>
+    </div>
+  </div>
+
+  <p class="form-note" *ngIf="!aiEnabled">The AI is not switched on for this platform yet, so quizzes cannot be created.</p>
+  <div class="form-error" role="alert" *ngIf="error"><mat-icon>error_outline</mat-icon>{{ error }}</div>
+
+  <!-- 1. setup -->
+  <section class="form-card setup" *ngIf="step === 'setup' || step === 'loading'">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full">
+      <mat-label>Course</mat-label>
+      <mat-select id="quizCourse" name="course" [(ngModel)]="courseId" [disabled]="step === 'loading'">
+        <mat-option *ngFor="let c of courses" [value]="c.courseId">{{ c.courseType }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p class="muted small" *ngIf="coursesLoaded && !courses.length">There are no courses yet.</p>
+
+    <fieldset class="group">
+      <legend>Difficulty</legend>
+      <label class="pill" *ngFor="let l of levels" [class.on]="difficulty === l">
+        <input type="radio" name="difficulty" [value]="l" [(ngModel)]="difficulty" [disabled]="step === 'loading'" />{{ l | titlecase }}
+      </label>
+    </fieldset>
+
+    <fieldset class="group">
+      <legend>Number of questions</legend>
+      <label class="pill" *ngFor="let n of counts" [class.on]="numQuestions === n">
+        <input type="radio" name="count" [value]="n" [(ngModel)]="numQuestions" [disabled]="step === 'loading'" />{{ n }}
+      </label>
+    </fieldset>
+
+    <button mat-flat-button color="primary" class="solid" id="startQuiz" type="button" (click)="start()" [disabled]="!canStart">
+      <mat-icon>auto_awesome</mat-icon>{{ step === 'loading' ? 'Writing your quiz...' : 'Start quiz' }}
+    </button>
+  </section>
+
+  <!-- 2. answering -->
+  <section *ngIf="(step === 'taking' || step === 'submitting') && quiz">
+    <div class="bar">
+      <strong>{{ quiz.courseTitle }}</strong>
+      <span class="muted">{{ quiz.difficulty | titlecase }} &middot; {{ answered }} of {{ quiz.questions.length }} answered</span>
+      <div class="track" aria-hidden="true"><div class="fill" [style.width.%]="answered * 100 / quiz.questions.length"></div></div>
+    </div>
+
+    <article class="q form-card" *ngFor="let q of quiz.questions" [attr.id]="'question' + q.index">
+      <h3><span class="num">{{ q.index + 1 }}</span>{{ q.question }}</h3>
+      <div class="options" role="radiogroup" [attr.aria-label]="'Question ' + (q.index + 1)">
+        <label class="opt" *ngFor="let o of q.options; let j = index" [class.on]="answers[q.index] === j">
+          <input type="radio" [name]="'q' + q.index" [checked]="answers[q.index] === j" (change)="pick(q.index, j)" [disabled]="step === 'submitting'" />
+          <span class="letter">{{ letter(j) }}</span><span>{{ o }}</span>
+        </label>
+      </div>
+    </article>
+
+    <div class="actions">
+      <span class="muted small" *ngIf="answered < quiz.questions.length">Unanswered questions count as wrong.</span>
+      <button mat-flat-button color="primary" class="solid" id="submitQuiz" type="button" (click)="submit()" [disabled]="step === 'submitting'">
+        {{ step === 'submitting' ? 'Marking...' : 'Submit answers' }}
+      </button>
+    </div>
+  </section>
+
+  <!-- 3. result -->
+  <section *ngIf="step === 'result' && result">
+    <div class="score form-card" id="quizScore">
+      <div class="big">{{ result.score }}<small>/{{ result.total }}</small></div>
+      <div>
+        <h3>{{ result.percent }}%</h3>
+        <p>{{ verdict }}</p>
+      </div>
+    </div>
+
+    <article class="q form-card" *ngFor="let it of result.items" [class.right]="it.correct" [class.wrong]="!it.correct">
+      <h3><span class="num">{{ it.index + 1 }}</span>{{ it.question }}</h3>
+      <ul class="review">
+        <li *ngFor="let o of it.options; let j = index"
+            [class.is-correct]="j === it.correctAnswer" [class.is-yours]="j === it.yourAnswer && j !== it.correctAnswer">
+          <span class="letter">{{ letter(j) }}</span><span class="txt">{{ o }}</span>
+          <span class="tag" *ngIf="j === it.correctAnswer">Correct answer</span>
+          <span class="tag bad" *ngIf="j === it.yourAnswer && j !== it.correctAnswer">Your answer</span>
+        </li>
+      </ul>
+      <p class="muted small" *ngIf="it.yourAnswer === null">You did not answer this one.</p>
+      <p class="why" *ngIf="it.explanation"><mat-icon>lightbulb</mat-icon>{{ it.explanation }}</p>
+    </article>
+
+    <div class="actions">
+      <button mat-stroked-button class="ghost" type="button" (click)="again()">Choose another course</button>
+      <button mat-flat-button color="primary" class="solid" id="retryQuiz" type="button" (click)="again(); start()">Try new questions</button>
+    </div>
+  </section>
+
+  <!-- history -->
+  <section class="history" *ngIf="history.length && (step === 'setup' || step === 'result')">
+    <h3>Your recent quizzes</h3>
+    <ul>
+      <li *ngFor="let h of history">
+        <span class="h-title">{{ h.courseTitle }}</span>
+        <span class="muted">{{ h.difficulty | titlecase }}</span>
+        <strong>{{ h.score }}/{{ h.total }}</strong>
+        <span class="muted">{{ h.takenAt | date: 'd MMM, h:mm a' }}</span>
+      </li>
+    </ul>
+  </section>
+</div>

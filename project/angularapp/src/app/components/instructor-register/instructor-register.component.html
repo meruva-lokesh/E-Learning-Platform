@@ -1,0 +1,257 @@
+<div class="page reg">
+
+  <p class="muted center" *ngIf="mode === 'loading'">Loading...</p>
+
+  <!-- someone else is logged in -->
+  <section class="form-card center" *ngIf="mode === 'other-role'">
+    <h2>Instructor registration</h2>
+    <p class="lead">You are logged in as a {{ otherRole }}. Log out first if you want to register as an instructor.</p>
+    <a mat-stroked-button class="ghost" routerLink="/dashboard">Back to my dashboard</a>
+  </section>
+
+  <ng-container *ngIf="mode === 'ready'">
+
+    <!-- header -->
+    <header class="hero">
+      <div>
+        <h1>Teach on the platform</h1>
+        <p>Apply once. An administrator reviews your application, and you can log in as soon as it is approved.</p>
+      </div>
+      <ul class="perks" aria-label="Why teach here">
+        <li><mat-icon>groups</mat-icon>Reach learners</li>
+        <li><mat-icon>video_library</mat-icon>Upload video lessons</li>
+        <li><mat-icon>payments</mat-icon>Earn from every enrolment</li>
+      </ul>
+    </header>
+
+    <!-- tabs -->
+    <div class="tabs" role="tablist" aria-label="Instructor registration">
+      <button type="button" role="tab" id="tabApply" [class.on]="tab === 'apply'" [attr.aria-selected]="tab === 'apply'" (click)="setTab('apply')"><mat-icon>edit_note</mat-icon>New application</button>
+      <button type="button" role="tab" id="tabCheck" [class.on]="tab === 'check'" [attr.aria-selected]="tab === 'check'" (click)="setTab('check')"><mat-icon>manage_search</mat-icon>Already applied?</button>
+    </div>
+
+    <!-- ============================ NEW APPLICATION ============================ -->
+    <section *ngIf="tab === 'apply'" id="applyPanel" role="tabpanel">
+      <ol class="steps" id="regSteps" aria-label="Registration steps" *ngIf="otpRequired">
+        <li [class.on]="regStep === 'form'" [class.done]="regStep !== 'form'"><span>1</span>Your details</li>
+        <li [class.on]="regStep === 'verify'" [class.done]="regStep === 'done'"><span>2</span>Verify mobile</li>
+        <li [class.on]="regStep === 'done'"><span>3</span>Done</li>
+      </ol>
+
+      <ng-container *ngIf="regStep === 'form'">
+        <p class="form-note" id="otpNote" *ngIf="otpRequired">After you submit we send a 6 digit code to your mobile number. You verify it on the next step, here on this page.</p>
+        <form [formGroup]="registerForm" (ngSubmit)="submit()" novalidate class="form-card grid">
+          <h3 class="sect"><mat-icon>person</mat-icon>Your account</h3>
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input matInput id="username" formControlName="username" autocomplete="username" />
+            <mat-error *ngIf="f['username'].errors?.['required']">Username is required</mat-error>
+            <mat-error *ngIf="f['username'].errors?.['pattern']">Username cannot contain spaces</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput id="email" type="email" formControlName="email" autocomplete="email" />
+            <mat-error *ngIf="f['email'].errors?.['required']">Email is required</mat-error>
+            <mat-error *ngIf="f['email'].errors?.['email']">Enter a valid email</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" autocomplete="new-password" />
+            <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"><mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon></button>
+            <mat-hint>8 or more characters with a letter and a number</mat-hint>
+            <mat-error *ngIf="f['password'].errors?.['pattern']">Use 8 to 72 characters with a letter and a number</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Confirm password</mat-label>
+            <input matInput id="confirmPassword" [type]="showPassword ? 'text' : 'password'" formControlName="confirmPassword" autocomplete="new-password" />
+            <mat-error *ngIf="registerForm.errors?.['mismatch']">Passwords do not match</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Mobile number</mat-label>
+            <input matInput id="mobileNumber" inputmode="numeric" maxlength="10" formControlName="mobileNumber" />
+            <mat-hint>We send a verification code to this number</mat-hint>
+            <mat-error *ngIf="f['mobileNumber'].errors">Enter a 10 digit mobile number</mat-error>
+          </mat-form-field>
+
+          <h3 class="sect"><mat-icon>school</mat-icon>About you</h3>
+          <mat-form-field appearance="outline">
+            <mat-label>Highest qualification</mat-label>
+            <input matInput id="qualification" formControlName="qualification" />
+            <mat-error *ngIf="f['qualification'].errors">Enter your qualification (2 to 100 characters)</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Years of experience</mat-label>
+            <input matInput id="experienceYears" type="number" min="0" max="60" formControlName="experienceYears" />
+            <mat-error *ngIf="f['experienceYears'].errors">Enter a number from 0 to 60</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Area of expertise</mat-label>
+            <input matInput id="expertise" formControlName="expertise" />
+            <mat-error *ngIf="f['expertise'].errors">Enter your area of expertise</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Short bio</mat-label>
+            <textarea matInput id="bio" rows="4" maxlength="1000" formControlName="bio"></textarea>
+            <mat-hint align="end">{{ f['bio'].value?.length || 0 }} / 1000 (at least 20)</mat-hint>
+            <mat-error *ngIf="f['bio'].errors">Write at least 20 characters about your teaching background</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>LinkedIn or portfolio link (optional)</mat-label>
+            <input matInput id="profileLink" formControlName="profileLink" placeholder="https://" />
+            <mat-error *ngIf="f['profileLink'].errors">The link must start with http:// or https://</mat-error>
+          </mat-form-field>
+
+          <div class="form-error full" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+          <div class="full actions">
+            <button mat-flat-button color="primary" class="solid" id="submitApplication" type="submit" [disabled]="loading">{{ loading ? 'Submitting...' : 'Submit application' }}</button>
+            <span class="muted small">Already applied? <button type="button" class="link" id="toCheck" (click)="setTab('check')">Check your application</button></span>
+          </div>
+        </form>
+      </ng-container>
+
+      <!-- step 2: verify the mobile number (only when the server has OTP switched on) -->
+      <div class="form-card otp-card" *ngIf="regStep === 'verify'">
+        <h2 id="stepVerify">Verify your mobile number</h2>
+        <p class="lead">Your application is saved for <strong>{{ email }}</strong>. We sent a 6 digit code by SMS to <strong>{{ maskedMobile }}</strong>. It works for 5 minutes.</p>
+        <p class="form-note" *ngIf="devCode" id="devCodeNote">Development mode: no SMS was sent. Your code is <strong id="devCode">{{ devCode }}</strong>.</p>
+        <div class="form-error" role="alert" *ngIf="otpError"><mat-icon>error_outline</mat-icon>{{ otpError }}</div>
+        <form class="otp-form" (ngSubmit)="verify()" novalidate>
+          <label class="field" for="otpCode">Verification code</label>
+          <input id="otpCode" name="code" class="code" type="text" inputmode="numeric" autocomplete="onetime-code" maxlength="6" placeholder="------" [(ngModel)]="code" (ngModelChange)="onCodeInput()" [disabled]="verifying" />
+          <button mat-flat-button color="primary" class="solid" id="verifyOtp" type="submit" [disabled]="!canVerify">{{ verifying ? 'Checking...' : 'Verify' }}</button>
+        </form>
+        <p class="muted small">Did not get it?
+          <button type="button" class="link" id="resendOtp" (click)="sendCode()" [disabled]="sending || secondsLeft > 0">
+            {{ secondsLeft > 0 ? 'Resend in ' + secondsLeft + 's' : (sending ? 'Sending...' : 'Resend code') }}
+          </button>
+        </p>
+      </div>
+
+      <!-- step 3: submitted -->
+      <div class="form-card otp-card" *ngIf="regStep === 'done'">
+        <div class="done-icon"><mat-icon>task_alt</mat-icon></div>
+        <h2 id="regDone">Application submitted</h2>
+        <p class="lead" *ngIf="otpRequired">Your mobile number is verified and your application is with an administrator.</p>
+        <p class="lead" *ngIf="!otpRequired">Your application is with an administrator.</p>
+        <div class="form-note" id="loginRule"><strong>You can log in only after you are approved.</strong> Come back to this page any time and use <em>Already applied?</em> to follow the progress.</div>
+        <div class="actions">
+          <button mat-flat-button color="primary" class="solid" id="checkMine" type="button" (click)="checkMine()">Check my application</button>
+          <a mat-stroked-button class="ghost" routerLink="/">Back to home</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ ALREADY APPLIED ============================ -->
+    <section *ngIf="tab === 'check'" id="checkPanel" role="tabpanel">
+      <div class="form-card check-card">
+        <h2>Where is my application?</h2>
+        <p class="lead">Type the username or e-mail you registered with.</p>
+        <form [formGroup]="checkForm" (ngSubmit)="lookup()" novalidate class="check-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Username or e-mail</mat-label>
+            <input matInput id="identifier" formControlName="identifier" autocomplete="username" />
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-error *ngIf="id?.errors?.['required']">Enter your username or e-mail</mat-error>
+          </mat-form-field>
+          <button mat-flat-button color="primary" class="solid" id="checkBtn" type="submit" [disabled]="checkForm.invalid || checking || checkWait > 0">
+            {{ checking ? 'Checking...' : checkWait > 0 ? 'Wait ' + checkWait + 's' : 'Check' }}
+          </button>
+        </form>
+        <div class="form-error" role="alert" id="checkError" *ngIf="checkError"><mat-icon>error_outline</mat-icon>{{ checkError }}
+          <button type="button" class="link" id="applyInstead" *ngIf="notFound" (click)="setTab('apply')">Apply now</button>
+        </div>
+      </div>
+
+      <!-- the answer -->
+      <div class="result" id="result" *ngIf="result">
+        <div class="result-head">
+          <div>
+            <h3>{{ result.username }}</h3>
+            <span class="muted">{{ result.maskedEmail }}</span>
+          </div>
+          <span class="pill" id="statusPill" [class.ok]="result.status === 'APPROVED'" [class.bad]="result.status === 'REJECTED'" [class.wait]="result.status === 'PENDING'">
+            {{ result.status === 'APPROVED' ? 'Approved' : result.status === 'REJECTED' ? 'Not approved' : 'Under review' }}
+          </span>
+        </div>
+        <p class="form-note ok" id="resubmittedNote" *ngIf="resubmitted">Your changes were saved and sent for review again.</p>
+        <ol class="timeline" aria-label="Application progress" id="timeline">
+          <li *ngFor="let s of steps" [ngClass]="s.state">
+            <span class="dot"><mat-icon>{{ s.icon }}</mat-icon></span>
+            <div><strong>{{ s.title }}</strong><span>{{ s.detail }}</span></div>
+          </li>
+        </ol>
+
+        <!-- what to do next -->
+        <div class="note ok" id="canLoginNote" *ngIf="result.canLogin">
+          <strong>You are approved and ready.</strong>
+          <p>Log in with the e-mail and password you registered with to open your instructor home page.</p>
+          <a mat-flat-button color="primary" class="solid" id="loginNow" routerLink="/login">Log in</a>
+        </div>
+        <div class="note" id="verifyNote" *ngIf="result.status === 'APPROVED' && !result.canLogin">
+          <strong>One step left: verify your mobile number.</strong>
+          <p>You are approved. Verify the code we text you, then you can log in.</p>
+          <a mat-flat-button color="primary" class="solid" id="verifyNow" routerLink="/verify-phone" [queryParams]="{ email: lookedUpEmail }" *ngIf="lookedUpEmail">Verify my number</a>
+          <p class="muted small" *ngIf="!lookedUpEmail">Check again with your e-mail address to open the verification step.</p>
+        </div>
+        <div class="note bad" id="rejectionNote" *ngIf="result.status === 'REJECTED'">
+          <strong>Reason from the administrator</strong>
+          <p>{{ result.rejectionReason }}</p>
+          <button mat-flat-button color="primary" class="solid" id="editApplication" type="button" (click)="startEdit()" *ngIf="!editing">Update and resubmit</button>
+        </div>
+        <div class="note" id="pendingNote" *ngIf="result.status === 'PENDING'">
+          <p>Reviews usually take a short while. You cannot log in until an administrator approves you. If you made a mistake, you can fix your details until a decision is made.</p>
+          <button mat-stroked-button class="ghost" id="editApplication" type="button" (click)="startEdit()" *ngIf="!editing">Edit my details</button>
+        </div>
+
+        <!-- fix and resubmit (e-mail and password prove who you are) -->
+        <form [formGroup]="editForm" (ngSubmit)="resubmit()" novalidate class="form-card grid edit" id="editForm" *ngIf="editing">
+          <h3 class="sect"><mat-icon>lock</mat-icon>Confirm it is you</h3>
+          <mat-form-field appearance="outline">
+            <mat-label>E-mail</mat-label>
+            <input matInput id="editEmail" type="email" formControlName="email" autocomplete="username" />
+            <mat-error *ngIf="e['email'].errors">Enter the e-mail you registered with</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput id="editPassword" type="password" formControlName="password" autocomplete="current-password" />
+            <mat-error *ngIf="e['password'].errors">Enter your password</mat-error>
+          </mat-form-field>
+
+          <h3 class="sect"><mat-icon>school</mat-icon>Your details</h3>
+          <mat-form-field appearance="outline">
+            <mat-label>Highest qualification</mat-label>
+            <input matInput id="qualification" formControlName="qualification" />
+            <mat-error *ngIf="e['qualification'].errors">Enter your qualification (2 to 100 characters)</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Years of experience</mat-label>
+            <input matInput id="experienceYears" type="number" min="0" max="60" formControlName="experienceYears" />
+            <mat-error *ngIf="e['experienceYears'].errors">Enter a number from 0 to 60</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Area of expertise</mat-label>
+            <input matInput id="expertise" formControlName="expertise" />
+            <mat-error *ngIf="e['expertise'].errors">Enter your area of expertise</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Short bio</mat-label>
+            <textarea matInput id="bio" rows="4" maxlength="1000" formControlName="bio"></textarea>
+            <mat-hint align="end">{{ e['bio'].value?.length || 0 }} / 1000 (at least 20)</mat-hint>
+            <mat-error *ngIf="e['bio'].errors">Write at least 20 characters</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>LinkedIn or portfolio link (optional)</mat-label>
+            <input matInput id="profileLink" formControlName="profileLink" placeholder="https://" />
+            <mat-error *ngIf="e['profileLink'].errors">The link must start with http:// or https://</mat-error>
+          </mat-form-field>
+          <div class="form-error full" role="alert" id="editError" *ngIf="editError"><mat-icon>error_outline</mat-icon>{{ editError }}</div>
+          <div class="full actions">
+            <button mat-flat-button color="primary" class="solid" id="resubmitApplication" type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Save and send for review' }}</button>
+            <button mat-stroked-button class="ghost" type="button" id="cancelEdit" (click)="cancelEdit()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </ng-container>
+</div>

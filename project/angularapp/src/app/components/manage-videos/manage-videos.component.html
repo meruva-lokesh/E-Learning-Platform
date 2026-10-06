@@ -1,0 +1,87 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h2>Course videos</h2>
+      <p>Upload lessons to a course and see how far your customers have watched.</p>
+    </div>
+  </div>
+
+  <div class="form-note" id="notApproved" *ngIf="notApproved">
+    Your instructor account is not approved yet, so you cannot manage videos.
+    <a routerLink="/instructor-register">See your application</a>
+  </div>
+  <div class="form-error" role="alert" id="loadError" *ngIf="loadError"><mat-icon>error_outline</mat-icon>{{ loadError }}</div>
+  <p class="form-note ok" id="videoMessage" *ngIf="message">{{ message }}</p>
+
+  <div class="picker" *ngIf="!notApproved">
+    <label for="courseSelect">Course</label>
+    <select id="courseSelect" class="native" [(ngModel)]="courseId" (ngModelChange)="onCourseChange()" [disabled]="uploading">
+      <option [ngValue]="null">Choose a course</option>
+      <option *ngFor="let c of courses" [ngValue]="c.courseId">{{ c.courseType }}</option>
+    </select>
+    <p class="empty small" id="noCourses" *ngIf="coursesLoaded && !courses.length">
+      There are no courses yet. Add a course first, then come back to upload videos.
+    </p>
+  </div>
+
+  <ng-container *ngIf="courseId !== null && !notApproved">
+    <section class="panel" id="uploadPanel">
+      <h3>Upload a video</h3>
+      <div class="grid2">
+        <div class="field">
+          <label for="videoTitle">Title</label>
+          <input id="videoTitle" class="native" maxlength="150" [(ngModel)]="title" [disabled]="uploading" />
+        </div>
+        <div class="field">
+          <label for="videoFile">Video file (MP4 or WebM, up to {{ maxMb }} MB)</label>
+          <input id="videoFile" class="native file" type="file" accept="video/mp4,video/webm,.mp4,.webm" (change)="onFileChosen($event)" [disabled]="uploading" />
+        </div>
+        <div class="field full">
+          <label for="videoDescription">Description (optional)</label>
+          <textarea id="videoDescription" class="native" rows="2" maxlength="500" [(ngModel)]="description" [disabled]="uploading"></textarea>
+        </div>
+      </div>
+      <p class="muted" id="fileInfo" *ngIf="file">{{ file.name }} &middot; {{ fmtSize(file.size) }}<span *ngIf="fileDuration"> &middot; {{ fmtDuration(fileDuration) }}</span></p>
+      <div class="form-error small" role="alert" id="fileError" *ngIf="fileError"><mat-icon>error_outline</mat-icon>{{ fileError }}</div>
+      <div class="form-error" role="alert" id="uploadError" *ngIf="uploadError"><mat-icon>error_outline</mat-icon>{{ uploadError }}</div>
+
+      <div class="bar" id="uploadProgress" *ngIf="uploading" role="progressbar" [attr.aria-valuenow]="uploadPercent" aria-valuemin="0" aria-valuemax="100">
+        <div class="fill" [style.width.%]="uploadPercent"></div>
+        <span>{{ uploadPercent }}%</span>
+      </div>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" class="solid" id="uploadVideo" type="button" [disabled]="!canUpload" (click)="upload()">
+          <mat-icon>upload</mat-icon>{{ uploading ? 'Uploading...' : 'Upload video' }}
+        </button>
+        <button mat-stroked-button class="ghost" id="cancelUpload" type="button" *ngIf="uploading" (click)="cancelUpload()">Cancel</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h3>Videos in this course</h3>
+        <span class="chip" id="enrolledCount" *ngIf="stats">{{ stats.enrolledCustomers }} enrolled</span>
+      </div>
+      <p class="empty" id="noVideos" *ngIf="!videosLoading && !loadError && !videos.length">No videos yet. Upload the first lesson above.</p>
+
+      <div class="table" *ngIf="videos.length">
+        <div class="row head">
+          <span>Lesson</span><span>Length</span><span>Size</span><span>Started</span><span>Finished</span><span>Average</span><span></span>
+        </div>
+        <div class="row" *ngFor="let v of videos; let i = index; trackBy: trackById" [attr.id]="'video' + v.id">
+          <span class="name"><strong>{{ i + 1 }}. {{ v.title }}</strong><small *ngIf="v.description">{{ v.description }}</small></span>
+          <span data-label="Length">{{ fmtDuration(v.durationSec) }}</span>
+          <span data-label="Size">{{ fmtSize(v.sizeBytes) }}</span>
+          <span data-label="Started" class="viewers">{{ statFor(v.id)?.viewers ?? 0 }}</span>
+          <span data-label="Finished" class="finished">{{ statFor(v.id)?.completedCount ?? 0 }}</span>
+          <span data-label="Average" class="average">{{ statFor(v.id)?.averagePercent ?? 0 }}%</span>
+          <span class="row-actions">
+            <a mat-stroked-button class="ghost watch" [routerLink]="['/watch', v.courseId]" [queryParams]="{ video: v.id }">Watch</a>
+            <button mat-stroked-button class="ghost danger del" type="button" (click)="askDelete(v)">Delete</button>
+          </span>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</div>

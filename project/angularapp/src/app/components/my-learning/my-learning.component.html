@@ -1,0 +1,29 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h2>My learning</h2>
+      <p>Pick up your video lessons where you stopped.</p>
+    </div>
+  </div>
+
+  <div class="form-error" role="alert" id="learningError" *ngIf="loadError"><mat-icon>error_outline</mat-icon>{{ loadError }}</div>
+  <p class="empty" id="noLearning" *ngIf="loaded && !loadError && !items.length">
+    None of your courses has video lessons yet. <a routerLink="/customer-view-courses">Browse courses</a>
+  </p>
+
+  <div class="grid">
+    <article class="card" *ngFor="let i of items; trackBy: trackById" [attr.id]="'learn' + i.courseId">
+      <h3>{{ i.courseType }}</h3>
+      <p class="muted">{{ i.completedVideos }} of {{ i.totalVideos }} lessons finished</p>
+      <div class="bar" role="progressbar" [attr.aria-valuenow]="i.percent" aria-valuemin="0" aria-valuemax="100">
+        <div class="fill" [style.width.%]="i.percent"></div>
+      </div>
+      <div class="foot">
+        <strong class="pct">{{ i.percent }}%</strong>
+        <a mat-flat-button color="primary" class="solid continue" [routerLink]="['/watch', i.courseId]" [queryParams]="i.resumeVideoId ? { video: i.resumeVideoId } : {}">
+          {{ i.percent === 100 ? 'Watch again' : i.completedVideos === 0 && i.resumePositionSec === 0 ? 'Start' : 'Continue' }}
+        </a>
+      </div>
+    </article>
+  </div>
+</div>

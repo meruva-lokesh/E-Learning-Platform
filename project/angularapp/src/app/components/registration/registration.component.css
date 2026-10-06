@@ -1,0 +1,42 @@
+.auth { display: grid; grid-template-columns: 1.05fr 1fr; min-height: calc(100vh - 64px); }
+.auth-hero { display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 56px clamp(24px, 6vw, 88px); color: #e8ecf5; background: linear-gradient(160deg, #0d1730 0%, #1c2c55 70%); }
+.auth-hero h1 { color: #fff; font-size: clamp(34px, 4.2vw, 52px); line-height: 1.1; max-width: 14ch; }
+.auth-hero p { margin: 0; max-width: 44ch; line-height: 1.65; color: #b9c3d8; }
+.auth-hero ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.auth-hero li { display: flex; align-items: center; gap: 12px; color: #dfe5f1; }
+.auth-hero li mat-icon { color: #fbb92b; }
+.auth-form { display: flex; align-items: center; justify-content: center; padding: 32px 20px; }
+.auth-form .form-card { width: 100%; }
+.alt { margin: 18px 0 0; text-align: center; color: var(--muted); font-size: 14px; }
+@media (max-width: 860px) { .auth { grid-template-columns: 1fr; } .auth-hero { padding: 32px 22px; } .auth-hero ul { display: none; } .auth-hero h1 { max-width: none; } }
+
+/* live password checklist */
+.pw-rules { display: grid; gap: 6px; margin: 2px 0 14px; padding: 12px 14px; list-style: none; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); }
+.pw-rules li { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13.5px; }
+.pw-rules li mat-icon { width: 18px; height: 18px; font-size: 18px; }
+.pw-rules li.ok { color: var(--ok); }
+
+/* step list and the inline OTP step */
+.steps { display: flex; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; flex-wrap: wrap; }
+.steps li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 13px Inter, sans-serif; }
+.steps li span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); font-size: 12px; }
+.steps li.on { color: #1a1205; background: var(--gold); border-color: var(--gold); }
+.steps li.on span { background: rgba(0, 0, 0, .15); border-color: transparent; color: #1a1205; }
+.steps li.done { color: var(--ok); border-color: rgba(52, 211, 153, .45); }
+.steps li.done span { background: rgba(52, 211, 153, .14); border-color: transparent; color: var(--ok); }
+.otp-form { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.field { font: 700 13px var(--display); color: var(--gold-text); }
+.code { width: 100%; padding: 14px; text-align: center; font: 700 28px/1 var(--display); letter-spacing: .5em; text-indent: .5em; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; }
+.code::placeholder { color: var(--muted); opacity: .5; }
+.code:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245, 158, 11, .25); }
+.link { border: 0; background: none; padding: 0; color: var(--gold-text); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link:disabled { color: var(--muted); text-decoration: none; cursor: default; }
+.done-icon { display: grid; place-items: center; width: 56px; height: 56px; margin: 0 0 14px; border-radius: 16px; background: rgba(52, 211, 153, .14); color: var(--ok); }
+.done-icon mat-icon { font-size: 30px; width: 30px; height: 30px; }
+.go-login { margin-top: 8px; }
+
+
+.or { display: flex; align-items: center; gap: 12px; margin: 20px 0 14px; color: var(--muted); font-size: 13px; }
+.or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.google-btn { display: flex; justify-content: center; min-height: 44px; }
+.err-link { margin-left: auto; font-weight: 700; color: var(--gold-text); }

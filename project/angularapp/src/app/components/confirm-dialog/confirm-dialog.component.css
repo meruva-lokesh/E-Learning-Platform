@@ -1,0 +1,4 @@
+.confirm { max-width: 380px; }
+.confirm-icon { width: 40px; height: 40px; font-size: 40px; margin: 8px 0 0 24px; color: #fbb92b; }
+.confirm-icon.danger { color: #f87171; }
+h2 { font-size: 22px; }

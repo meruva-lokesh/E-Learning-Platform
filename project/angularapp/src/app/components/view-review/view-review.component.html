@@ -1,0 +1,21 @@
+<div class="page">
+  <div class="page-head"><div><h2>Reviews</h2><p>Feedback customers left on their courses.</p></div></div>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+  <div class="empty" *ngIf="loaded && !errorMessage && reviews.length === 0"><mat-icon>rate_review</mat-icon><h3>No reviews yet</h3><p>Reviews appear here after customers rate their courses.</p></div>
+  <div class="table-card" *ngIf="reviews.length > 0">
+    <table class="data">
+      <thead><tr><th>S.No</th><th>Customer name</th><th>Course title</th><th>Feedback comments</th><th>Rating</th><th>Date created</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let r of pageItems; let i = index">
+          <td>{{ pageIndex * pageSize + i + 1 }}</td>
+          <td>{{ r.customer?.customerName }}</td>
+          <td>{{ r.subject }}</td>
+          <td>{{ r.body }}</td>
+          <td><span class="stars" [attr.aria-label]="r.rating + ' out of 5'"><mat-icon *ngFor="let s of [1,2,3,4,5]">{{ s <= (r.rating || 0) ? 'star' : 'star_border' }}</mat-icon></span></td>
+          <td>{{ r.dateCreated | date: 'dd/MM/yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <mat-paginator *ngIf="reviews.length > 0" [length]="reviews.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[5, 10, 25, 50]" (page)="onPage($event)" showFirstLastButtons></mat-paginator>
+</div>

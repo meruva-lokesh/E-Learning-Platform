@@ -1,0 +1,163 @@
+/* Global styles. The Material theme lives in theme.scss; this file holds the design tokens and shared layout. */
+:root {
+  /* dark navy surfaces with a gold accent */
+  --ink: #f1f5f9;
+  --ink-2: #cbd5e1;
+  --muted: #94a3b8;
+  --primary: #f59e0b;
+  --primary-dark: #fbbf24;
+  --primary-soft: rgba(245, 158, 11, .14);
+  --gold: #f59e0b;
+  --gold-text: #fbbf24;
+  --gold-soft: rgba(245, 158, 11, .14);
+  --bg: #0b1220;
+  --surface: #131c2e;
+  --surface-2: #182339;
+  --line: rgba(255, 255, 255, .09);
+  --danger: #f87171;
+  --ok: #34d399;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -12px rgba(0,0,0,.55);
+  --shadow-hover: 0 2px 4px rgba(0,0,0,.35), 0 18px 40px -12px rgba(0,0,0,.65), 0 0 0 1px rgba(245,158,11,.28);
+  --display: 'Plus Jakarta Sans', Inter, 'Segoe UI', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { margin: 0; min-height: 100vh; background-color: var(--bg); background-image: radial-gradient(900px 500px at 0% 0%, rgba(59,130,246,.10), transparent 60%), radial-gradient(800px 500px at 100% 100%, rgba(245,158,11,.08), transparent 60%); background-attachment: fixed; color: var(--ink); font-family: Inter, 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.5; }
+a { color: var(--gold-text); font-weight: 600; }
+h1, h2, h3, h4 { font-family: var(--display); color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+:focus-visible { outline: 3px solid rgba(245,158,11,.55); outline-offset: 2px; }
+
+/* page frame */
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 20px 72px; }
+.page.narrow { max-width: 880px; }
+.page-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+.page-head h2 { font-size: 30px; line-height: 1.2; font-weight: 800; }
+.page-head p { margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
+.center { text-align: center; }
+.muted { color: var(--muted); }
+.row-gap { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+/* forms */
+.form-card { max-width: 560px; margin: 0 auto; padding: 32px 30px 26px; border-radius: 18px; background: rgba(19,28,46,.88); border: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: var(--shadow); }
+.form-card h2 { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+.form-card .lead { margin: 0 0 22px; color: var(--muted); }
+.form-card form { display: flex; flex-direction: column; gap: 4px; }
+.form-card mat-form-field { width: 100%; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.form-error { display: flex; align-items: center; gap: 8px; margin: 4px 0 10px; padding: 10px 12px; border-radius: 10px; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.35); color: var(--danger); font-size: 14px; }
+.form-error.small { padding: 4px 0; background: none; }
+.form-note { margin: 0 0 10px; padding: 10px 12px; border-radius: 10px; background: var(--gold-soft); border: 1px solid rgba(245,158,11,.3); color: var(--gold-text); font-size: 14px; }
+.form-note.ok { background: rgba(52,211,153,.12); border-color: rgba(52,211,153,.35); color: var(--ok); }
+
+/* course grid + cards (shared by admin and customer pages) */
+.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 22px; }
+
+/* tables */
+.table-card { overflow-x: auto; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+table.data { width: 100%; min-width: 640px; border-collapse: collapse; }
+table.data th { text-align: left; padding: 14px 16px; background: var(--surface-2); color: var(--gold-text); font-family: var(--display); font-weight: 700; font-size: 12.5px; letter-spacing: .04em; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.data td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+table.data tbody tr:last-child td { border-bottom: 0; }
+table.data tbody tr:hover { background: rgba(255,255,255,.035); }
+table.data .num { text-align: right; font-variant-numeric: tabular-nums; }
+.thumb { width: 64px; height: 40px; object-fit: cover; object-position: center; border-radius: 6px; background: linear-gradient(135deg, #16213f, #f59e0b); display: block; }
+
+/* chips, empty states */
+.pill { display: inline-block; padding: 3px 10px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-weight: 600; font-size: 12.5px; }
+.empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 56px 16px; text-align: center; color: var(--muted); background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); }
+.empty .mat-icon { width: 48px; height: 48px; font-size: 48px; color: #64748b; }
+.empty h3 { font-size: 20px; color: var(--ink); }
+.empty p { margin: 0 0 8px; max-width: 46ch; }
+
+@media (max-width: 600px) {
+  .page { padding: 20px 14px 56px; }
+  .form-card { padding: 24px 18px; }
+  .page-head h2 { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+.price { font: 800 18px var(--display); color: var(--ink); }
+mat-paginator { background: var(--surface) !important; }
+
+/* live image preview on the add / edit course forms: same 16:9 frame as the course card, image always fills it */
+.img-preview { position: relative; aspect-ratio: 16 / 9; margin: 0 0 18px; overflow: hidden; border-radius: 12px; background: linear-gradient(135deg, #16213f, #1c2c55 55%, #f59e0b); }
+.img-preview img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.img-preview span { position: absolute; inset: 0; display: grid; place-items: center; padding: 12px; text-align: center; color: rgba(255,255,255,.9); font: 600 14px var(--display); }
+
+/* Form fields on the dark surfaces: set the text colours explicitly so they stay readable
+   whichever Material theme is loaded (typed text, labels, hints, errors, disabled button) */
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-input-text-color: #f1f5f9;
+  --mdc-outlined-text-field-input-text-placeholder-color: #94a3b8;
+  --mdc-outlined-text-field-caret-color: #fbbf24;
+  --mdc-outlined-text-field-label-text-color: #94a3b8;
+  --mdc-outlined-text-field-hover-label-text-color: #cbd5e1;
+  --mdc-outlined-text-field-focus-label-text-color: #fbbf24;
+  --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, .22);
+  --mdc-outlined-text-field-hover-outline-color: rgba(251, 191, 36, .6);
+  --mdc-outlined-text-field-focus-outline-color: #fbbf24;
+  --mdc-outlined-text-field-error-label-text-color: #f87171;
+  --mdc-outlined-text-field-error-outline-color: #f87171;
+  --mat-form-field-subscript-text-color: #94a3b8;
+}
+
+.mat-mdc-form-field .mat-mdc-input-element,
+.mat-mdc-form-field .mat-mdc-select-value,
+.mat-mdc-form-field textarea {
+  color: #f1f5f9 !important;
+  caret-color: #fbbf24;
+}
+
+.mat-mdc-form-field .mat-mdc-input-element::placeholder {
+  color: #94a3b8 !important;
+}
+
+.mat-mdc-form-field .mdc-floating-label,
+.mat-mdc-form-field .mat-mdc-floating-label {
+  color: #94a3b8 !important;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: #fbbf24 !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-hint,
+.mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
+  color: #94a3b8;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-error {
+  color: #f87171 !important;
+}
+
+.mat-mdc-form-field.mat-form-field-invalid .mdc-floating-label {
+  color: #f87171 !important;
+}
+
+/* browser autofill keeps the dark field instead of turning it white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f1f5f9;
+  caret-color: #fbbf24;
+  box-shadow: 0 0 0 1000px #131c2e inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
+/* disabled gold buttons stay readable (Login and Register before the form is valid) */
+.mat-mdc-unelevated-button.mat-primary:disabled,
+.mat-mdc-raised-button.mat-primary:disabled {
+  background: rgba(245, 158, 11, .22) !important;
+  color: rgba(241, 245, 249, .6) !important;
+}
+
+/* image upload on the add / edit course forms (the preview above reuses .img-preview) */
+.upload { margin-bottom: 14px; }
+.upload .img-preview { margin-bottom: 12px; }
+.upload-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.upload-hint { color: var(--muted); font-size: 13px; }

@@ -1,0 +1,50 @@
+<ng-container *ngIf="role === 'CUSTOMER'">
+  <button type="button" class="fab" id="chatbotToggle" (click)="toggle()"
+          [attr.aria-expanded]="open" aria-controls="chatbotPanel" [attr.aria-label]="open ? 'Close AI assistant' : 'Open AI assistant'">
+    <mat-icon>{{ open ? 'close' : 'auto_awesome' }}</mat-icon>
+  </button>
+
+  <section class="panel" id="chatbotPanel" *ngIf="open" role="dialog" aria-label="AI assistant">
+    <header class="head">
+      <div class="title">
+        <mat-icon>auto_awesome</mat-icon>
+        <div>
+          <strong>AI assistant</strong>
+          <span>Ask about courses and learning</span>
+        </div>
+      </div>
+      <button type="button" class="icon-btn" (click)="clear()" [disabled]="!bubbles.length" aria-label="Clear chat" title="Clear chat">
+        <mat-icon>delete_sweep</mat-icon>
+      </button>
+    </header>
+
+    <div class="scroller" #scroller aria-live="polite">
+      <div class="empty" *ngIf="!bubbles.length">
+        <p>Hi! I can suggest courses, explain what they cover and help you plan what to learn next.</p>
+        <button type="button" class="chip" *ngFor="let s of suggestions" (click)="useSuggestion(s)">{{ s }}</button>
+      </div>
+
+      <div class="row" *ngFor="let b of bubbles; trackBy: trackByIndex" [class.me]="b.from === 'user'">
+        <div class="bubble">{{ b.text }}</div>
+        <div class="cards" *ngIf="b.courses?.length">
+          <a class="card" *ngFor="let c of b.courses" [routerLink]="['/course-details', c.courseId]" (click)="open = false">
+            <mat-icon>school</mat-icon>
+            <span class="name">{{ c.courseType }}</span>
+            <span class="price">{{ c.coursePrice | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="sending"><div class="bubble typing" aria-label="The assistant is typing"><i></i><i></i><i></i></div></div>
+      <div class="form-error" role="alert" *ngIf="error"><mat-icon>error_outline</mat-icon>{{ error }}</div>
+    </div>
+
+    <form class="composer" (ngSubmit)="send()">
+      <textarea #box id="chatbotInput" name="draft" rows="1" [(ngModel)]="draft" [maxlength]="maxLength"
+                placeholder="Type your question" aria-label="Your message" (keydown.enter)="onEnter($event)"></textarea>
+      <button type="submit" class="send" id="chatbotSend" [disabled]="sending || !draft.trim()" aria-label="Send message">
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+  </section>
+</ng-container>

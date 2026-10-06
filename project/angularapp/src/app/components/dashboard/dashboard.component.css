@@ -1,0 +1,12 @@
+.hero { background: linear-gradient(135deg, #0d1730 0%, #1c2c55 100%); color: #dfe2ff; }
+.hero-inner { max-width: 1200px; margin: 0 auto; padding: clamp(32px, 5vw, 56px) 20px; }
+.hero h1 { color: #fff; font-size: clamp(32px, 4.5vw, 48px); line-height: 1.1; margin-bottom: 14px; }
+.intro { margin: 0; max-width: 64ch; font-size: 17px; line-height: 1.7; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.ghost { color: #fff !important; border-color: rgba(255,255,255,.6) !important; }
+.page { margin-top: -28px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
+.tile { display: grid; gap: 2px; padding: 20px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
+.tile mat-icon { margin-bottom: 8px; color: var(--primary); }
+.tile strong { font: 800 28px var(--display); }
+.tile span { color: var(--muted); font-size: 14px; }

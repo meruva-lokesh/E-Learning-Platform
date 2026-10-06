@@ -1,0 +1,63 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h2>Instructor requests</h2>
+      <p>Review each application. A rejection needs a reason, and the instructor can read it and apply again.</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" *ngFor="let t of tabs" class="tab" [id]="'tab' + t.key" [class.on]="tab === t.key" [attr.aria-selected]="tab === t.key" (click)="tab = t.key">
+      {{ t.label }} <span class="n">{{ count(t.key) }}</span>
+    </button>
+  </div>
+
+  <div class="form-error" role="alert" *ngIf="loadError"><mat-icon>error_outline</mat-icon>{{ loadError }}</div>
+  <div class="form-error" role="alert" id="actionError" *ngIf="actionError"><mat-icon>error_outline</mat-icon>{{ actionError }}</div>
+  <p class="form-note" id="actionOk" *ngIf="actionOk">{{ actionOk }}</p>
+
+  <p class="empty" *ngIf="loaded && !loadError && !shown.length">No {{ tab === 'ALL' ? '' : (tab | lowercase) + ' ' }}applications.</p>
+
+  <div class="list">
+    <article class="card" *ngFor="let i of shown; trackBy: trackById" [attr.id]="'inst' + i.userId">
+      <header>
+        <div>
+          <h3>{{ i.username }}</h3>
+          <span class="muted">{{ i.email }} &middot; {{ i.mobileNumber }}</span>
+        </div>
+        <span class="chip" [ngClass]="chip(i.status)">{{ i.status | titlecase }}</span>
+      </header>
+
+      <dl>
+        <div><dt>Qualification</dt><dd>{{ i.qualification }}</dd></div>
+        <div><dt>Experience</dt><dd>{{ i.experienceYears }} years</dd></div>
+        <div class="full"><dt>Expertise</dt><dd>{{ i.expertise }}</dd></div>
+        <div class="full"><dt>Bio</dt><dd>{{ i.bio }}</dd></div>
+        <div class="full" *ngIf="i.profileLink"><dt>Link</dt><dd><a [href]="i.profileLink" target="_blank" rel="noopener noreferrer">{{ i.profileLink }}</a></dd></div>
+        <div><dt>Applied</dt><dd>{{ i.submittedAt | date: 'd MMM y, h:mm a' }}</dd></div>
+        <div *ngIf="i.reviewedAt"><dt>Reviewed</dt><dd>{{ i.reviewedAt | date: 'd MMM y, h:mm a' }}</dd></div>
+      </dl>
+
+      <p class="reason" *ngIf="i.status === 'REJECTED' && i.rejectionReason"><strong>Reason given:</strong> {{ i.rejectionReason }}</p>
+
+      <div class="actions" *ngIf="i.status !== 'APPROVED' && rejectingId !== i.userId">
+        <button mat-flat-button color="primary" class="solid approve" type="button" (click)="approve(i)" [disabled]="busyId !== null">
+          {{ busyId === i.userId ? 'Working...' : 'Approve' }}
+        </button>
+        <button mat-stroked-button class="ghost danger reject" type="button" *ngIf="i.status === 'PENDING'" (click)="startReject(i)" [disabled]="busyId !== null">Reject</button>
+      </div>
+
+      <div class="reject-box" *ngIf="rejectingId === i.userId">
+        <label [for]="'reason' + i.userId">Reason for rejection (the instructor will see this)</label>
+        <textarea [id]="'reason' + i.userId" class="reason-input" rows="3" maxlength="500" [(ngModel)]="reason" placeholder="For example: please add your certificates and a link to your work"></textarea>
+        <div class="count" [class.low]="!reasonOk">{{ reasonLength }} / 500 (at least 5)</div>
+        <div class="actions">
+          <button mat-flat-button class="solid danger-solid confirm-reject" type="button" (click)="confirmReject(i)" [disabled]="!reasonOk || busyId !== null">
+            {{ busyId === i.userId ? 'Saving...' : 'Reject application' }}
+          </button>
+          <button mat-stroked-button class="ghost" type="button" (click)="cancelReject()" [disabled]="busyId !== null">Cancel</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

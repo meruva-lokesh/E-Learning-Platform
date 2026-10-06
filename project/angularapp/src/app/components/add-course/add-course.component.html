@@ -1,0 +1,54 @@
+<div class="page">
+  <div class="form-card">
+    <h2>Add New Course</h2>
+    <p class="lead">Fields marked * are required.</p>
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>Course Type</mat-label>
+        <input matInput id="courseType" type="text" formControlName="courseType" />
+        <mat-error *ngIf="f['courseType'].errors?.['required']">Course type is required</mat-error>
+      </mat-form-field>
+
+      <!-- the image is chosen from the computer; the server saves it and returns its URL, which goes into courseImageUrl -->
+      <div class="upload">
+        <input #fileInput type="file" id="courseImageFile" hidden accept="image/png,image/jpeg,image/gif,image/webp" (change)="onFileSelected($event)" />
+        <div class="img-preview">
+          <img *ngIf="(previewUrl || courseForm.value.courseImageUrl) && !imgFailed"
+               [src]="previewUrl || courseForm.value.courseImageUrl"
+               (error)="imgFailed = true"
+               (load)="imgFailed = false"
+               alt="Course image preview">
+          <span *ngIf="!previewUrl && !courseForm.value.courseImageUrl">Image preview appears here</span>
+          <span *ngIf="!previewUrl && courseForm.value.courseImageUrl && imgFailed">This image could not be loaded. Choose another image.</span>
+        </div>
+        <div class="upload-row">
+          <button mat-stroked-button color="primary" type="button" id="browseImage" [disabled]="uploading" (click)="fileInput.click()">
+            <mat-icon>upload</mat-icon>{{ uploading ? 'Uploading...' : (courseForm.value.courseImageUrl ? 'Change image' : 'Browse image') }}
+          </button>
+          <span class="upload-hint">PNG, JPG, GIF or WEBP, up to 5 MB</span>
+        </div>
+        <div class="form-error small" role="alert" id="uploadError" *ngIf="uploadError">{{ uploadError }}</div>
+        <div class="form-error small" *ngIf="!uploadError && !uploading && f['courseImageUrl'].touched && f['courseImageUrl'].errors?.['required']">Course image is required</div>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Course Details</mat-label>
+        <textarea matInput id="courseDetails" rows="3" formControlName="courseDetails"></textarea>
+        <mat-error *ngIf="f['courseDetails'].errors?.['required']">Course details are required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+        <span matTextPrefix>&#8377;&nbsp;</span>
+        <input matInput id="coursePrice" type="number" min="0" formControlName="coursePrice" />
+        <mat-error *ngIf="f['coursePrice'].errors?.['required']">Price is required</mat-error>
+        <mat-error *ngIf="f['coursePrice'].errors?.['min']">Price cannot be negative</mat-error>
+      </mat-form-field>
+
+      <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" id="addCourseButton" [disabled]="courseForm.invalid || loading || uploading">Add Course</button>
+      </div>
+    </form>
+  </div>
+</div>

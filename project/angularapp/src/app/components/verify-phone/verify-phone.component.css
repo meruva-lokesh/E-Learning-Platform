@@ -1,0 +1,16 @@
+/* Verify phone (Midnight) */
+.verify { max-width: 480px; margin: 24px auto 0; text-align: center; }
+.icon { display: grid; place-items: center; width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 16px; background: var(--gold-soft); color: var(--gold-text); }
+.icon mat-icon { font-size: 30px; width: 30px; height: 30px; }
+h2 { font-size: 24px; margin-bottom: 8px; }
+.muted { color: var(--muted); line-height: 1.6; }
+.muted strong { color: var(--ink-2); }
+form { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; text-align: left; }
+.field { font: 700 13px var(--display); color: var(--gold-text); }
+.code { width: 100%; padding: 14px; text-align: center; font: 700 28px/1 var(--display); letter-spacing: .5em; text-indent: .5em; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; }
+.code::placeholder { color: var(--muted); opacity: .5; }
+.code:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245, 158, 11, .25); }
+.resend { margin: 18px 0 0; color: var(--muted); font-size: 14px; }
+.link { border: 0; background: none; padding: 0; color: var(--gold-text); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link:disabled { color: var(--muted); text-decoration: none; cursor: default; }
+.form-note, .form-error { text-align: left; margin-top: 14px; }

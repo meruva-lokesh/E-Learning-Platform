@@ -1,0 +1,116 @@
+<div class="auth">
+  <section class="auth-hero">
+    <h1>Start learning today.</h1>
+    <p>Create a free customer account to browse courses, enroll and review them.</p>
+    <ul>
+      <li><mat-icon>person_add</mat-icon>One account, one minute to set up</li>
+      <li><mat-icon>lock</mat-icon>Your password is stored securely</li>
+      <li><mat-icon>devices</mat-icon>Works on desktop and mobile</li>
+    </ul>
+  </section>
+
+  <section class="auth-form">
+    <div class="form-card">
+      <ol class="steps" id="regSteps" aria-label="Registration steps" *ngIf="otpRequired">
+        <li [class.on]="step === 'form'" [class.done]="step !== 'form'"><span>1</span>Your details</li>
+        <li [class.on]="step === 'verify'" [class.done]="step === 'done'"><span>2</span>Verify mobile</li>
+        <li [class.on]="step === 'done'"><span>3</span>Done</li>
+      </ol>
+
+      <ng-container *ngIf="step === 'form'">
+      <h2>Registration</h2>
+      <p class="lead">Fields marked * are required.</p>
+      <p class="form-note" id="otpNote" *ngIf="otpRequired">After you register we send a 6 digit code to your mobile number. You verify it on the next step, here on this page.</p>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput id="username" type="text" formControlName="username" autocomplete="username" />
+          <mat-error *ngIf="f['username'].errors?.['required']">Username is required</mat-error>
+          <mat-error *ngIf="f['username'].errors?.['minlength']">Username needs at least 3 characters</mat-error>
+          <mat-error *ngIf="f['username'].errors?.['spaces']">Username cannot contain spaces</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput id="email" type="email" formControlName="email" autocomplete="email" />
+          <mat-error *ngIf="f['email'].errors?.['required']">Email is required</mat-error>
+          <mat-error *ngIf="f['email'].errors?.['pattern']">Enter a valid email, for example name&#64;example.com</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" autocomplete="new-password" (focus)="passwordFocused = true" />
+          <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="f['password'].errors?.['required']">Password is required</mat-error>
+          <mat-error *ngIf="f['password'].errors?.['weak']">Password does not meet all the rules below</mat-error>
+        </mat-form-field>
+        <ul class="pw-rules" id="passwordRules" aria-label="Password rules" *ngIf="passwordFocused || f['password'].value">
+          <li *ngFor="let c of passwordChecks" [class.ok]="c.ok">
+            <mat-icon aria-hidden="true">{{ c.ok ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>{{ c.label }}
+          </li>
+        </ul>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput id="confirmPassword" [type]="showPassword ? 'text' : 'password'" formControlName="confirmPassword" autocomplete="new-password" [errorStateMatcher]="confirmMatcher" />
+          <mat-error *ngIf="f['confirmPassword'].errors?.['required']">Confirm password is required</mat-error>
+          <mat-error *ngIf="!f['confirmPassword'].errors?.['required'] && registerForm.errors?.['mismatch']">Password do not match</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile Number</mat-label>
+          <input matInput id="mobileNumber" type="text" inputmode="numeric" formControlName="mobileNumber" maxlength="10" />
+          <mat-error *ngIf="f['mobileNumber'].errors?.['required']">Mobile number is required</mat-error>
+          <mat-error *ngIf="f['mobileNumber'].errors?.['pattern']">Enter a 10 digit mobile number starting with 6, 7, 8 or 9</mat-error>
+        </mat-form-field>
+
+        <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+        <button mat-flat-button color="primary" type="submit" id="registerButton" [disabled]="registerForm.invalid || loading">
+          {{ loading ? 'Creating account...' : 'Register' }}
+        </button>
+      </form>
+      <ng-container *ngIf="googleEnabled">
+        <div class="or"><span>or</span></div>
+        <div class="form-error" role="alert" id="googleError" *ngIf="googleError"><mat-icon>error_outline</mat-icon>{{ googleError }}<a *ngIf="alreadyRegistered" routerLink="/login" class="err-link" id="loginFromError">Log in</a></div>
+        <div #googleButton id="googleButton" class="google-btn"></div>
+      </ng-container>
+      <p class="alt">Already have an account? <a routerLink="/login">Login</a></p>
+      </ng-container>
+
+      <!-- step 2: verify the mobile number (only when the server has OTP switched on) -->
+      <ng-container *ngIf="step === 'verify'">
+        <h2 id="stepVerify">Verify your mobile number</h2>
+        <p class="lead">Your account <strong>{{ email }}</strong> is created. We sent a 6 digit code by SMS to <strong>{{ maskedMobile }}</strong>. It works for 5 minutes.</p>
+
+        <p class="form-note" *ngIf="devCode" id="devCodeNote">Development mode: no SMS was sent. Your code is <strong id="devCode">{{ devCode }}</strong>.</p>
+        <div class="form-error" role="alert" *ngIf="otpError"><mat-icon>error_outline</mat-icon>{{ otpError }}</div>
+
+        <form class="otp-form" (ngSubmit)="verify()" novalidate>
+          <label class="field" for="otpCode">Verification code</label>
+          <input id="otpCode" name="code" class="code" type="text" inputmode="numeric" autocomplete="one-time-code"
+                 maxlength="6" placeholder="------" [(ngModel)]="code" (ngModelChange)="onCodeInput()" [disabled]="verifying" />
+          <button mat-flat-button color="primary" id="verifyOtp" type="submit" [disabled]="!canVerify">
+            {{ verifying ? 'Checking...' : 'Verify' }}
+          </button>
+        </form>
+
+        <p class="alt">
+          Did not get it?
+          <button type="button" class="link" id="resendOtp" (click)="sendCode()" [disabled]="sending || secondsLeft > 0">
+            {{ secondsLeft > 0 ? 'Resend in ' + secondsLeft + 's' : (sending ? 'Sending...' : 'Resend code') }}
+          </button>
+        </p>
+      </ng-container>
+
+      <!-- step 3 -->
+      <ng-container *ngIf="step === 'done'">
+        <div class="done-icon"><mat-icon>verified</mat-icon></div>
+        <h2 id="regDone">Mobile number verified</h2>
+        <p class="lead">Your account is ready. Log in with your email and password.</p>
+        <a mat-flat-button color="primary" class="go-login" id="goLogin" routerLink="/login">Log in now</a>
+      </ng-container>
+    </div>
+  </section>
+</div>

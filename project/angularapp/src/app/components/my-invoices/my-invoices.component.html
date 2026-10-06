@@ -1,0 +1,34 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h2>My invoices</h2>
+      <p>One invoice for every payment you made. Download it as a PDF any time.</p>
+    </div>
+  </div>
+
+  <div class="form-error" role="alert" id="invoicesError" *ngIf="loadError"><mat-icon>error_outline</mat-icon>{{ loadError }}</div>
+  <div class="form-error" role="alert" id="downloadError" *ngIf="downloadError"><mat-icon>error_outline</mat-icon>{{ downloadError }}</div>
+  <p class="empty" id="noInvoices" *ngIf="loaded && !loadError && !invoices.length">
+    You have no invoices yet. An invoice appears here after you pay for a course. <a routerLink="/customer-view-courses">Browse courses</a>
+  </p>
+
+  <div class="table-card" *ngIf="invoices.length">
+    <table class="data">
+      <thead><tr><th>Invoice</th><th>Date</th><th>Courses</th><th class="num">Total</th><th></th></tr></thead>
+      <tbody>
+        <tr *ngFor="let i of invoices; trackBy: trackById" [attr.id]="'invoice' + i.id">
+          <td><strong>{{ i.invoiceNumber }}</strong></td>
+          <td>{{ i.issuedAt | date: 'd MMM y' }}</td>
+          <td>{{ i.lines.length }} {{ i.lines.length === 1 ? 'course' : 'courses' }}</td>
+          <td class="num">{{ i.totalPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td class="acts">
+            <a mat-stroked-button color="primary" class="view" [routerLink]="['/invoice', i.id]">View</a>
+            <button mat-flat-button color="primary" class="solid pdf" type="button" (click)="download(i)" [disabled]="busyId === i.id">
+              <mat-icon>download</mat-icon>{{ busyId === i.id ? 'Preparing...' : 'PDF' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

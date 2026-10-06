@@ -1,0 +1,22 @@
+.top { background: linear-gradient(135deg, #0d1730, #1c2c55); color: #dfe2ff; }
+.top-inner { max-width: 1200px; margin: 0 auto; padding: 32px 20px 28px; }
+.top h2 { color: #fff; font-size: clamp(28px, 4vw, 38px); }
+.top p { margin: 8px 0 18px; max-width: 62ch; }
+.ai-search { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.ai-field { flex: 1 1 340px; }
+.ai-search button { height: 56px; }
+.ai-search ::ng-deep .mdc-text-field--outlined { background: rgba(11,18,32,.7); border-radius: 10px; }
+.ghost { color: #fff !important; border-color: rgba(255,255,255,.6) !important; }
+.layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 28px; align-items: start; }
+.layout:has(.filters) { grid-template-columns: 250px minmax(0, 1fr); }
+.filters { position: sticky; top: 88px; padding: 20px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
+.filters h3 { margin-bottom: 14px; font-size: 18px; }
+.filters form { display: grid; gap: 12px; }
+.price-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.count { margin: 0 0 14px; color: var(--ink-2); font-weight: 600; }
+.results { grid-column: 2; }
+.layout > .results:only-child { grid-column: 1 / -1; }
+mat-paginator { margin-top: 24px; border-radius: 12px; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .results { grid-column: 1; } .filters { position: static; } }
+.ai-search button[disabled] { background: rgba(255,255,255,.22) !important; color: #fff !important; }
+.ai-search .solid { background: #f59e0b !important; color: #1f1300 !important; }

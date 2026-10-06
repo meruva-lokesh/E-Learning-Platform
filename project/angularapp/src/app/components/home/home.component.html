@@ -1,0 +1,29 @@
+<section class="hero">
+  <div class="hero-inner">
+    <div class="copy">
+      <h1>E-Learning Platform</h1>
+      <p class="intro">Welcome to our E-Learning Platform, where knowledge meets innovation to create transformative learning experiences. Discover a wide range of courses designed to help you achieve your academic, professional, and personal goals. From beginner-level lessons to advanced professional certifications, we&apos;ve got something for everyone.</p>
+      <div class="cta" *ngIf="!role"><a mat-flat-button color="primary" class="big" routerLink="/registration">Register</a><a mat-stroked-button class="big ghost" routerLink="/login">Login</a><a mat-stroked-button class="big ghost" routerLink="/instructor-register">Become an instructor</a></div>
+      <div class="cta" *ngIf="role"><a mat-flat-button color="primary" class="big" routerLink="/dashboard">Go to my dashboard</a></div>
+    </div>
+    <ul class="proof" aria-label="Highlights">
+      <li><mat-icon>menu_book</mat-icon><div><strong>Wide range of courses</strong><span>Beginner lessons to certifications</span></div></li>
+      <li><mat-icon>auto_awesome</mat-icon><div><strong>AI course search</strong><span>Search in plain words</span></div></li>
+      <li><mat-icon>star</mat-icon><div><strong>Real learner reviews</strong><span>Pick with confidence</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<div class="page">
+  <section class="steps">
+    <h2>How it works</h2>
+    <ol>
+      <li><span class="n">1</span><h3>Create an account</h3><p>Register as a customer in under a minute.</p></li>
+      <li><span class="n">2</span><h3>Find your course</h3><p>Search, filter by price and read reviews.</p></li>
+      <li><span class="n">3</span><h3>Enroll and learn</h3><p>Add to cart, pay once, and find it under My Enrollments.</p></li>
+    </ol>
+  </section>
+  <section class="about">
+    <p>Explore dynamic learning paths, interactive modules, and expert-led courses tailored to provide real-world skills that matter in today&apos;s fast-paced world. Empower yourself through personalized learning experiences and cutting-edge resources that allow you to learn at your own pace, from anywhere, at any time. Whether you&apos;re looking to develop new skills or enhance your current knowledge, our E-Learning platform is the gateway to lifelong learning and success. Join us today and transform your learning journey into something truly impactful.</p>
+  </section>
+</div>

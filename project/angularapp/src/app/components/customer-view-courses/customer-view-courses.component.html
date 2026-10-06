@@ -1,0 +1,69 @@
+<section class="top">
+  <div class="top-inner">
+    <h2>Available Courses</h2>
+    <p>Search by name, or use AI Search to describe what you want in plain words, for example "cheap beginner course".</p>
+    <form class="ai-search" (ngSubmit)="keywordSearch()">
+      <mat-form-field appearance="outline" class="ai-field" subscriptSizing="dynamic">
+        <mat-label>Search courses</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput id="aiSearchInput" name="searchText" type="text" [(ngModel)]="searchText" maxlength="200"
+               placeholder="Try: 'java' or, with AI Search, 'cheap beginner course'" />
+      </mat-form-field>
+      <button mat-flat-button color="primary" type="submit" id="searchButton" class="solid">Search</button>
+      <button mat-flat-button color="accent" type="button" id="aiSearchButton" (click)="aiSearch()" [disabled]="aiLoading || !searchText.trim()">
+        <mat-icon>auto_awesome</mat-icon>{{ aiLoading ? 'Searching...' : 'AI Search' }}
+      </button>
+      <button mat-stroked-button type="button" class="ghost" id="clearAiButton" *ngIf="aiActive" (click)="clearAiSearch()">Clear AI Search</button>
+    </form>
+  </div>
+</section>
+
+<div class="page">
+  <p class="form-note" *ngIf="aiActive">Showing AI-matched results for: '{{ activeQuery }}'</p>
+  <div class="form-error" role="alert" *ngIf="aiError"><mat-icon>error_outline</mat-icon>{{ aiError }}</div>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+
+  <div class="layout">
+    <aside class="filters" *ngIf="!aiActive">
+      <h3>Filter</h3>
+      <form (ngSubmit)="applyFilters()">
+        <div class="price-row">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Min ₹</mat-label>
+            <input matInput id="minPrice" name="minPrice" type="number" min="0" [(ngModel)]="filters.minPrice" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Max ₹</mat-label>
+            <input matInput id="maxPrice" name="maxPrice" type="number" min="0" [(ngModel)]="filters.maxPrice" />
+          </mat-form-field>
+        </div>
+        <div class="form-error small" *ngIf="priceError">{{ priceError }}</div>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Sort by</mat-label>
+          <mat-select id="sort" name="sort" [(ngModel)]="filters.sort" (selectionChange)="applyFilters()">
+            <mat-option value="newest">Newest</mat-option>
+            <mat-option value="priceAsc">Price: low to high</mat-option>
+            <mat-option value="priceDesc">Price: high to low</mat-option>
+            <mat-option value="name">Name</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" id="applyFilters">Apply filters</button>
+        <button mat-button type="button" id="clearFilters" *ngIf="hasFilters" (click)="clearFilters()">Clear filters</button>
+      </form>
+    </aside>
+
+    <section class="results">
+      <p class="count" id="resultCount" *ngIf="loaded && courses.length > 0">
+        {{ aiActive ? courses.length : totalElements }} course{{ (aiActive ? courses.length : totalElements) === 1 ? '' : 's' }} found
+      </p>
+      <div class="empty" *ngIf="loaded && !errorMessage && courses.length === 0"><mat-icon>search_off</mat-icon><h3>No courses found</h3><p>Try different words or a wider price range.</p></div>
+      <div class="course-grid">
+        <app-course-card *ngFor="let course of courses" mode="customer" [course]="course" [rating]="ratingFor(course)"
+                         [inCart]="!!course.courseId && inCart.has(course.courseId)"
+                         [enrolled]="!!course.courseId && enrolled.has(course.courseId)" (addToCart)="addToCart($event)"></app-course-card>
+      </div>
+      <mat-paginator *ngIf="!aiActive && totalElements > pageSize" [length]="totalElements" [pageSize]="pageSize"
+                     [pageIndex]="filters.page || 0" [hidePageSize]="true" (page)="onPage($event)" showFirstLastButtons></mat-paginator>
+    </section>
+  </div>
+</div>

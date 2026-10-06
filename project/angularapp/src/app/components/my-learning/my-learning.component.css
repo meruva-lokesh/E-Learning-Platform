@@ -1,0 +1,10 @@
+/* Customer: my learning (Midnight) */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+.card { display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.card h3 { font-size: 19px; margin: 0; }
+.muted { margin: 0; color: var(--muted); font-size: 14px; }
+.bar { height: 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+.fill { height: 100%; background: var(--gold); transition: width .3s ease; }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
+.pct { font: 800 20px var(--display); color: var(--gold-text); }
+.empty { padding: 40px 0; text-align: center; color: var(--muted); }

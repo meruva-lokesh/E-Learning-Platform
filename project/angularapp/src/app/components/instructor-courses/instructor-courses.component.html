@@ -1,0 +1,63 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h2>My courses</h2>
+      <p>Add, edit and remove the courses you teach. Students see them in Available Courses.</p>
+    </div>
+    <button mat-flat-button color="primary" class="solid" id="addCourse" type="button" *ngIf="!notApproved" (click)="openAdd()"><mat-icon>add</mat-icon>Add course</button>
+  </div>
+
+  <div class="form-note" id="notApproved" *ngIf="notApproved">
+    Your instructor account is not approved yet, so you cannot manage courses.
+    <a routerLink="/instructor-register">See your application</a>
+  </div>
+
+  <p class="form-note" id="courseMessage" *ngIf="message">{{ message }}</p>
+  <div class="form-error" role="alert" *ngIf="loadError"><mat-icon>error_outline</mat-icon>{{ loadError }}</div>
+
+  <form class="form-card editor" *ngIf="formOpen" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <h3>{{ editingId === null ? 'Add a course' : 'Edit course' }}</h3>
+    <mat-form-field appearance="outline">
+      <mat-label>Course title</mat-label>
+      <input matInput id="courseType" formControlName="courseType" />
+      <mat-error *ngIf="f['courseType'].errors">Enter the course title (up to 100 characters)</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Image link (optional)</mat-label>
+      <input matInput id="courseImageUrl" formControlName="courseImageUrl" placeholder="https://" />
+      <mat-error *ngIf="f['courseImageUrl'].errors">The link must start with http:// or https://</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Details</mat-label>
+      <textarea matInput id="courseDetails" rows="4" maxlength="2000" formControlName="courseDetails"></textarea>
+      <mat-error *ngIf="f['courseDetails'].errors">Enter the course details</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Price (INR)</mat-label>
+      <input matInput id="coursePrice" type="number" min="0" formControlName="coursePrice" />
+      <mat-error *ngIf="f['coursePrice'].errors">Enter a price of 0 or more</mat-error>
+    </mat-form-field>
+    <div class="form-error" role="alert" id="formError" *ngIf="formError"><mat-icon>error_outline</mat-icon>{{ formError }}</div>
+    <div class="actions">
+      <button mat-flat-button color="primary" class="solid" id="saveCourse" type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Save course' }}</button>
+      <button mat-stroked-button class="ghost" type="button" (click)="closeForm()" [disabled]="saving">Cancel</button>
+    </div>
+  </form>
+
+  <p class="empty" id="noCourses" *ngIf="loaded && !notApproved && !loadError && !courses.length && !formOpen">You have not added a course yet. Choose "Add course" to start.</p>
+
+  <div class="grid">
+    <article class="card" *ngFor="let c of courses; trackBy: trackById" [attr.id]="'course' + c.courseId">
+      <div class="thumb"><img *ngIf="c.courseImageUrl" [src]="c.courseImageUrl" alt="" loading="lazy" /><mat-icon *ngIf="!c.courseImageUrl">school</mat-icon></div>
+      <div class="body">
+        <h3>{{ c.courseType }}</h3>
+        <p>{{ c.courseDetails }}</p>
+        <div class="price">{{ c.coursePrice | currency: 'INR' : 'symbol' : '1.0-2' }}</div>
+      </div>
+      <div class="actions">
+        <button mat-stroked-button class="ghost edit" type="button" (click)="openEdit(c)"><mat-icon>edit</mat-icon>Edit</button>
+        <button mat-stroked-button class="ghost danger del" type="button" (click)="askDelete(c)"><mat-icon>delete</mat-icon>Delete</button>
+      </div>
+    </article>
+  </div>
+</div>

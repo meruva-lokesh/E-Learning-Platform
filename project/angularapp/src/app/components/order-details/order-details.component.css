@@ -1,0 +1,5 @@
+.back { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 12px; text-decoration: none; }
+.cell { display: flex; align-items: center; gap: 12px; min-width: 200px; }
+tfoot td { padding: 16px; background: var(--surface-2); }
+.total-label { text-align: right; font-weight: 700; }
+.total { font: 800 20px var(--display); }

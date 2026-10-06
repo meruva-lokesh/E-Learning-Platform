@@ -1,0 +1,5 @@
+/* Customer: my invoices (Midnight) */
+.empty { padding: 40px 0; text-align: center; color: var(--muted); }
+.acts { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.num { text-align: right; }
+@media (max-width: 640px) { .acts { justify-content: flex-start; } }

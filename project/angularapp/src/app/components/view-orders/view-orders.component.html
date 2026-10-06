@@ -1,0 +1,20 @@
+<div class="page">
+  <div class="page-head"><div><h2>Enrollments</h2><p>Every order placed by customers.</p></div></div>
+  <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+  <div class="empty" *ngIf="loaded && !errorMessage && orders.length === 0"><mat-icon>receipt_long</mat-icon><h3>No enrollments yet</h3><p>Orders appear here once customers enroll in courses.</p></div>
+  <div class="table-card" *ngIf="orders.length > 0">
+    <table class="data">
+      <thead><tr><th>S.No</th><th>Customer name</th><th>Course type</th><th class="num">Quantity</th><th class="num">Total price</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let order of pageItems; let i = index">
+          <td>{{ pageIndex * pageSize + i + 1 }}</td>
+          <td>{{ order.customer?.customerName }}</td>
+          <td><div *ngFor="let c of order.courses">{{ c.courseType }}</div></td>
+          <td class="num">{{ order.courses?.length }}</td>
+          <td class="num">{{ order.orderPrice | currency:'INR':'symbol':'1.0-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <mat-paginator *ngIf="orders.length > 0" [length]="orders.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[5, 10, 25, 50]" (page)="onPage($event)" showFirstLastButtons></mat-paginator>
+</div>

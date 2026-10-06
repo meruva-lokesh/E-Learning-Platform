@@ -1,0 +1,19 @@
+.card { display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 14px; background: var(--surface); box-shadow: 0 1px 2px rgba(15,23,42,.05), 0 8px 24px rgba(15,23,42,.06); transition: box-shadow .2s, transform .2s; }
+.card:hover { box-shadow: 0 2px 4px rgba(15,23,42,.06), 0 14px 32px rgba(15,23,42,.12); transform: translateY(-2px); }
+.cover { position: relative; display: block; aspect-ratio: 16 / 9; background: linear-gradient(135deg, #16213f, #1c2c55 55%, #f59e0b); overflow: hidden; }
+.cover img { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.initial { position: absolute; inset: 0; display: grid; place-items: center; font: 800 56px 'Plus Jakarta Sans', sans-serif; color: rgba(255,255,255,.85); }
+.body { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 16px 18px 6px; }
+.body h3 { font-size: 18px; line-height: 1.3; }
+.body h3 a { color: var(--ink); text-decoration: none; }
+.body h3 a:hover { color: var(--gold-text); }
+.body p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.price { margin-top: 4px; font: 800 20px 'Plus Jakarta Sans', sans-serif; color: var(--ink); }
+.foot { display: flex; gap: 8px; padding: 12px 18px 18px; margin-top: auto; }
+.foot .add-cart { flex: 1; }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
+
+/* "Enrolled" badge on the picture and the Go to course button */
+.enrolled-badge { position: absolute; top: 10px; left: 10px; z-index: 2; display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px 4px 6px; border-radius: 999px; background: rgba(11, 18, 32, .82); border: 1px solid rgba(52, 211, 153, .5); color: var(--ok); font: 700 12.5px var(--display); backdrop-filter: blur(6px); }
+.enrolled-badge mat-icon { width: 18px; height: 18px; font-size: 18px; }
+.go-course { width: 100%; }

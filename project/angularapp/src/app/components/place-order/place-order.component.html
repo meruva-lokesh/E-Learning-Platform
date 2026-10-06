@@ -1,0 +1,40 @@
+<div class="page">
+  <div class="form-card">
+    <h2>Payment</h2>
+    <p class="lead">Confirm your details to enroll in {{ courses.length }} course{{ courses.length === 1 ? '' : 's' }}.</p>
+    <p class="form-note" id="razorpayNote" *ngIf="razorpayOn">
+      <strong>Test payment.</strong> Razorpay opens in a pop-up. No real money is used in test mode.
+    </p>
+    <form [formGroup]="orderForm" (ngSubmit)="makePayment()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput id="name" type="text" formControlName="name" />
+        <mat-error *ngIf="f['name'].errors?.['required']">Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Mobile Number</mat-label>
+        <input matInput id="mobileNumber" type="text" inputmode="numeric" formControlName="mobileNumber" maxlength="10" />
+        <mat-error *ngIf="f['mobileNumber'].errors">Enter a valid 10 digit mobile number</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>What are you (Student / Professional)</mat-label>
+        <textarea matInput id="information" rows="2" formControlName="information"></textarea>
+        <mat-error *ngIf="f['information'].errors?.['required']">This field is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email ID</mat-label>
+        <input matInput id="email" type="email" formControlName="email" />
+        <mat-error *ngIf="f['email'].errors">Enter a valid email</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Total Price</mat-label>
+        <span matTextPrefix>&#8377;&nbsp;</span>
+        <input matInput id="totalPrice" type="number" formControlName="totalPrice" />
+      </mat-form-field>
+      <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" id="makePayment" [disabled]="orderForm.invalid || courses.length === 0 || loading">{{ razorpayOn ? 'Pay with Razorpay' : 'Make Payment' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

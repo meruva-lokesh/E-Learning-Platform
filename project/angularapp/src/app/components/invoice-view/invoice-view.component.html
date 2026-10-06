@@ -1,0 +1,52 @@
+<div class="page">
+  <div class="page-head">
+    <div><h2>Invoice</h2><p>Keep this for your records.</p></div>
+    <div class="head-actions" *ngIf="invoice">
+      <a mat-stroked-button color="primary" routerLink="/my-invoices">All invoices</a>
+      <button mat-flat-button color="primary" class="solid pdf" type="button" id="downloadPdf" (click)="download()" [disabled]="busy">
+        <mat-icon>download</mat-icon>{{ busy ? 'Preparing...' : 'Download PDF' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-error" role="alert" id="viewError" *ngIf="loadError"><mat-icon>error_outline</mat-icon>{{ loadError }}</div>
+  <div class="form-error" role="alert" id="downloadError" *ngIf="downloadError"><mat-icon>error_outline</mat-icon>{{ downloadError }}</div>
+  <p class="empty" id="noInvoice" *ngIf="notFound">
+    There is no invoice for this order. Invoices are made for online payments. <a routerLink="/my-orders">Back to My Enrollments</a>
+  </p>
+
+  <article class="sheet" id="invoiceSheet" *ngIf="invoice">
+    <header>
+      <div>
+        <h3>{{ invoice.gstPercent > 0 ? 'Tax invoice' : 'Invoice' }}</h3>
+        <strong class="seller">{{ invoice.sellerName }}</strong>
+        <span class="line" *ngFor="let l of addressLines">{{ l }}</span>
+        <span class="line" *ngIf="invoice.sellerGstin">GSTIN: {{ invoice.sellerGstin }}</span>
+      </div>
+      <dl>
+        <div><dt>Invoice no.</dt><dd id="invNumber">{{ invoice.invoiceNumber }}</dd></div>
+        <div><dt>Date</dt><dd>{{ invoice.issuedAt | date: 'd MMM y' }}</dd></div>
+        <div *ngIf="invoice.razorpayPaymentId"><dt>Payment ref.</dt><dd>{{ invoice.razorpayPaymentId }}</dd></div>
+      </dl>
+    </header>
+
+    <section class="billed">
+      <span class="label">Billed to</span>
+      <strong>{{ invoice.customerName }}</strong>
+      <span class="line">{{ invoice.customerEmail }}</span>
+    </section>
+
+    <table class="data">
+      <thead><tr><th>Course</th><th class="num">Amount</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let l of invoice.lines"><td>{{ l.title }}</td><td class="num">{{ l.paise / 100 | currency:'INR':'symbol':'1.2-2' }}</td></tr>
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <div *ngIf="invoice.gstPercent > 0"><span>Amount before tax</span><span>{{ invoice.taxablePaise / 100 | currency:'INR':'symbol':'1.2-2' }}</span></div>
+      <div *ngIf="invoice.gstPercent > 0"><span>GST {{ invoice.gstPercent }}% (included in the price)</span><span>{{ invoice.taxPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</span></div>
+      <div class="grand"><span>Total paid</span><span id="invTotal">{{ invoice.totalPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</span></div>
+    </div>
+  </article>
+</div>

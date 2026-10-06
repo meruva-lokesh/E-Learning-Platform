@@ -1,0 +1,58 @@
+<div class="page">
+  <div class="form-card">
+    <h2>Add Review Details</h2>
+    <p class="lead">You can review the courses you have enrolled in.</p>
+    <form [formGroup]="reviewForm" #formDir="ngForm" (ngSubmit)="onSubmit(formDir)" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>Customer Id</mat-label>
+        <input matInput id="customerId" type="text" [value]="customerId" readonly />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Course Type</mat-label>
+        <mat-select id="subject" formControlName="subject">
+          <mat-option *ngFor="let t of courseTypes" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+        <mat-hint *ngIf="courseTypes.length === 0">Enroll in a course first to review it</mat-hint>
+        <mat-error *ngIf="f['subject'].errors?.['required']">Course type is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Feedback comments</mat-label>
+        <textarea matInput id="body" rows="3" formControlName="body"></textarea>
+        <mat-error *ngIf="f['body'].errors?.['required']">Feedback is required</mat-error>
+      </mat-form-field>
+
+      <div class="rating">
+        <span class="rating-label" id="ratingLabel">Rating *</span>
+        <div class="stars-input" id="ratingStars" role="radiogroup" aria-labelledby="ratingLabel">
+          <button type="button" mat-icon-button class="star" *ngFor="let s of stars" [class.on]="s <= (f['rating'].value || 0)"
+                  role="radio" [attr.aria-checked]="s === f['rating'].value" [attr.aria-label]="s + ' star' + (s > 1 ? 's' : '')" (click)="setRating(s)">
+            <mat-icon>{{ s <= (f['rating'].value || 0) ? 'star' : 'star_border' }}</mat-icon>
+          </button>
+        </div>
+        <div class="form-error small" *ngIf="f['rating'].touched && f['rating'].errors">Please select a rating</div>
+      </div>
+
+      <div class="form-note ok" *ngIf="message">{{ message }}</div>
+      <div class="form-error" role="alert" *ngIf="errorMessage"><mat-icon>error_outline</mat-icon>{{ errorMessage }}</div>
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" id="submitReview" [disabled]="reviewForm.invalid || loading">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="form-card my-reviews" id="myReviews" *ngIf="myReviews.length > 0">
+    <h2>My reviews</h2>
+    <p class="lead">You can remove a review you wrote.</p>
+    <article class="my-review" *ngFor="let r of myReviews">
+      <div class="my-review-body">
+        <strong>{{ r.subject }}</strong>
+        <app-star-rating [value]="r.rating || 0" [count]="1"></app-star-rating>
+        <p>{{ r.body }}</p>
+        <small class="muted">{{ r.dateCreated | date:'mediumDate' }}</small>
+      </div>
+      <button mat-stroked-button color="warn" type="button" class="del-review" (click)="deleteReview(r)"><mat-icon>delete</mat-icon>Delete</button>
+    </article>
+  </div>
+</div>

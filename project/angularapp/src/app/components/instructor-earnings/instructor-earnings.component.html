@@ -1,0 +1,53 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h2>My earnings</h2>
+      <p>What students paid for your courses, minus the platform share. The admin pays you out and records it here.</p>
+    </div>
+  </div>
+
+  <div class="form-error" role="alert" id="earningsError" *ngIf="loadError"><mat-icon>error_outline</mat-icon>{{ loadError }}</div>
+
+  <ng-container *ngIf="summary">
+    <div class="stats">
+      <div class="stat"><span>Total earned</span><strong id="totalEarned">{{ summary.totalPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+      <div class="stat wait"><span>Waiting for payout</span><strong id="pendingAmount">{{ summary.pendingPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+      <div class="stat ok"><span>Paid to you</span><strong id="paidAmount">{{ summary.paidOutPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+    </div>
+    <p class="note">The platform keeps {{ summary.commissionPercent }}% of each sale. You get the rest.</p>
+
+    <h3>Sales</h3>
+    <p class="empty" id="noSales" *ngIf="!summary.earnings.length">No sales yet. When a student pays for one of your courses, it appears here.</p>
+    <div class="table-card" *ngIf="summary.earnings.length">
+      <table class="data">
+        <thead><tr><th>Date</th><th>Course</th><th class="num">Student paid</th><th class="num">Platform share</th><th class="num">Your share</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let e of summary.earnings" [attr.id]="'earning' + e.id">
+            <td>{{ e.createdAt | date: 'd MMM y' }}</td>
+            <td>{{ e.courseTitle }}</td>
+            <td class="num">{{ e.grossPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</td>
+            <td class="num">{{ e.feePaise / 100 | currency:'INR':'symbol':'1.2-2' }}</td>
+            <td class="num"><strong>{{ e.ownerPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</strong></td>
+            <td><span class="chip" [ngClass]="e.status === 'PAID_OUT' ? 'ok' : 'wait'">{{ e.status === 'PAID_OUT' ? 'Paid' : 'Waiting' }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Payouts received</h3>
+    <p class="empty" id="noPayouts" *ngIf="!summary.payouts.length">You have not received a payout yet.</p>
+    <div class="table-card" *ngIf="summary.payouts.length">
+      <table class="data">
+        <thead><tr><th>Date</th><th class="num">Amount</th><th>Sales covered</th><th>Reference</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let p of summary.payouts" [attr.id]="'payout' + p.id">
+            <td>{{ p.paidAt | date: 'd MMM y' }}</td>
+            <td class="num"><strong>{{ p.amountPaise / 100 | currency:'INR':'symbol':'1.2-2' }}</strong></td>
+            <td>{{ p.earningsCount }}</td>
+            <td>{{ p.reference }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>
